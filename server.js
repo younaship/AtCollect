@@ -4,9 +4,21 @@ var app = express();
 var bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser')
 
+const fs = require("fs");
+const http = require("http");
+const https = require("https");
+const SSL_KEY = "./server-key.pem";
+const SSL_CERT = "./server-cert.pem"; //"/etc/letsencrypt/live/ccsv.g-cc.jp/cert.pem" 
+const OPTIONS = {
+    key: fs.readFileSync( SSL_KEY ),
+    cert: fs.readFileSync( SSL_CERT ),
+};
+
 const log4js = require('log4js')
 const logger = log4js.getLogger();
 logger.level = 'debug';
+
+
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -14,14 +26,14 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-const DAYS = 1;
+const DAYS = 14;
 const expiresIn = 60 * 60 * 24 * DAYS * 1000;
 const COOKIE_OPT = {maxAge: expiresIn, httpOnly: true};
 
 app.use("/", express.static( __dirname + "/static"));
 app.set("view engine", "ejs");
 
-app.get("/", function (req, res) {
+app.get("/",async function (req, res) {
     res.render("./index.ejs");
 });
 
@@ -33,7 +45,7 @@ app.get("/u/:id",async function (req, res) {
     if(!user || !user.uid) return pushNotFound(res);
 
     const post = await fire.getNewPostOnUser(user.uid);
-    if(!post) return pushNotFound(res);
+    if(!post) return res.render("./res/nopost.ejs",{name:id})
 
     res.writeHead(302, {
         'Location': '/res/'+post.guid
@@ -41,25 +53,33 @@ app.get("/u/:id",async function (req, res) {
     res.end();
 });
 
-app.get("/mypage",async function (req, res) {
+app.get("/mypage",async function (req, res) { // ログイン・登録後もここ
     const uid = await getUidFromSession(req); // Auth
-    if(!uid) return res.json({status:"session error."})
+    if(!uid) return pushNullSession(res);
 
     const posts = await fire.getPosts(uid);
     const user = await fire.getUserByUid(uid);
-    if(!user || !posts) return pushNotFound(res);
+    if(!user) {
+        res.writeHead(302, {
+            'Location': '/mkuser/'
+        });
+        res.end();
+        return;
+    }
+    if(!posts) return pushNotFound(res);
 
     const data = {
         posts : posts,
         user : user
     }
+    console.log(data)
     res.render("./mypage/",data);
 });
 
 app.get("/mypage/:postid",async function (req, res) {
     const postid = req.params.postid;
     const uid = await getUidFromSession(req); // Auth
-    if(!uid) return res.json({status:"session error."})
+    if(!uid) return pushNullSession(res);
 
     if(!postid) return pushNotFound(res);
     var post = await fire.getPost(postid);
@@ -102,7 +122,31 @@ app.get("/create", function (req, res) {
     res.render("./create",);
 });
 
+app.get("/signin", function (req, res) {
+    res.render("./signin");
+});
+
+app.get("/mkuser/",function (req,res){
+    res.render("./mkuser");
+})
+
 /** Post */
+
+/** 投稿にリプライ Ajax */
+app.post("/rep/:resid",async function(req,res){
+    const resid = req.params.resid;
+    const message = req.body.message;
+    if(!resid||!message) return pushNotFound(res);
+
+    const uid = await getUidFromSession(req); // Auth
+    if(!uid) return pushNullSession(res);
+
+    fire.setResReply(resid,message);
+    
+    res.json({status:"success"});
+    res.end();
+});
+
 app.post("/res/:postid",async function(req,res){
     const postid = req.params.postid;
     const message = req.body.message;
@@ -115,6 +159,32 @@ app.post("/res/:postid",async function(req,res){
     res.render("./res/sended.ejs",{message:message});
     res.end();
 });
+
+/**アカウントID作成 Ajax */
+app.post("/mkuser",async function(req,res){
+
+    const id = req.body.id;
+    if(!isHarfEisu(id)) return res.end();
+
+    const uid = await getUidFromSession(req);
+    if(!uid) return pushNotFound(res);
+    
+    var user = await fire.getUserByid(id);
+    if(user) return res.json({status:"error",message:"既にユーザーが存在します。[Already exists.]"})
+
+    user = await fire.createUser(uid,id);
+    console.log("created")
+    return res.json({status:"success"})
+
+    function isHarfEisu(str){
+        str = (str==null)?"":str;
+        if(str.match(/^[A-Za-z0-9]+$/)){
+          return true;
+        }else{
+          return false;
+        }
+    }
+})
 
 app.post("/create",async function (req, res) {
     const message = req.body.message;
@@ -135,19 +205,52 @@ app.post('/login', async (req, res) => {
     var r = await fire.getSession(idToken,COOKIE_OPT);
     if(r){
         res.cookie("session",r,COOKIE_OPT);
+        res.cookie('session_time',new Date().getTime(),COOKIE_OPT);
         res.json({
             status : "success"
         })
     }else res.json({status:"error"})
 });
 
-app.post('/loggout', (req, res) => {
+app.get('/signout', (req, res) => { // GET
     res.clearCookie('session');
-    res.redirect('/login');
+    res.clearCookie('session_time');
+    res.render("./signout/")
 });
 
+const sv = https.createServer( OPTIONS, app );
 
-app.listen(80,()=>console.log("start"));
+sv.listen(443,()=>{
+    console.log("start ApiSV.")
+})
+
+var app2 = express();
+
+const sv2 = http.createServer(app2);
+
+sv2.listen(80,()=>{
+    console.log("start echo on http.")
+});
+
+function checkSession(res){
+    
+}
+
+function _checkSessionInTime(timestamp){
+    const LIFE_TIME = 60 * 60 * 1000; // (1h)
+    if(isNaN(timestamp)) return false;
+    return timestamp < new Date().getTime() + LIFE_TIME;
+}
+
+/** IDTokenを使い、新しいセッションを作成します。 */
+async function _createNewSession(res,idToken){
+    var st = await fire.getSession(idToken,COOKIE_OPT);
+    if(st){
+        res.cookie("session",st,COOKIE_OPT);
+        res.cookie('session_time',new Date().getTime(),COOKIE_OPT);
+    }else return false
+    return st;
+}
 
 async function getUidFromSession(req){
     var session = req.cookies.session;
@@ -163,5 +266,13 @@ function pushNotFound(res){
 }
 
 function pushNullSession(res){
-    res.json({status:"auth error. null session."});
+    res.writeHead(302, {
+        'Location': '/signin/'
+    });
+    res.end();
+}
+
+test();
+function test(){
+    console.log(_checkSessionInTime(1587378656632))
 }

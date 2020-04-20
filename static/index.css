@@ -19,6 +19,7 @@ p{
 input{
     border: none;
     box-shadow: 1px 1px 5px 1px gray;
+    -webkit-appearance: none;
 }
 
 input:active{
@@ -27,12 +28,22 @@ input:active{
 
 .header{
     position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     top: 0;
     left: 0;
     width: 100%;
     height: 60px;
     z-index: 5;
     /*box-shadow: 1px 1px 5px 1px gray;*/
+}
+
+.header .title{
+    font-size: large;
+    color: white;
+    text-align: center;
 }
 
 .top_area{
@@ -81,10 +92,11 @@ input:active{
     position: absolute;
     left: 0;
     top: 170px;
+    width: 100%;
 }
 
 .content.pd{
-    padding-top: 100px;
+    padding-top: 110px;
 }
 
 .content.fit{
@@ -95,6 +107,12 @@ input:active{
     align-items: center;
     height: 100vh;
     width: 100%;
+}
+
+/* CSS Anim */
+
+.trans{
+    opacity: 0;
 }
 
 /* All */
@@ -127,8 +145,20 @@ a.link{
     opacity: .8;
 }
 
-p.l{
+.xs{
+    font-size: x-small;
+}
+
+.s{
+    font-size: small;
+}
+
+.l{
     font-size: x-large;
+}
+
+.xl{
+    font-size: xx-large;
 }
 
 /* img */
@@ -145,18 +175,24 @@ p.l{
     justify-content: center;
 }
 
+.row.line{
+    width: auto;
+    flex-direction: column;
+    justify-content: start;
+}
+
 .ibtn{
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: white;
-    border-radius: 20px;
+    border-radius: 16px;
     width: 360px;
     height: 45px;
-    margin-top: 10px;
     font-size: large;
     font-weight: 550;
+    box-shadow: 1px 1px 5px 1px gray;
 }
 
 .ibtn:active{
@@ -215,7 +251,7 @@ p.l{
     vertical-align: middle;
     outline: none;
     text-align: center;
-    font-size: large;
+    font-size: medium;
     width: 280px;
     height: 60px;
     background-color: transparent;
@@ -224,20 +260,10 @@ p.l{
 .post > img{
     height: 100%;
     width: 100%;
+    border-radius: 15px;
 }
 
-.btn.send{
-    background-color: rgb(30,100,255);
-    border-radius: 20px;
-    color: white;
-    width: 380px;
-    height: 70px;
-    font-size: x-large;
-    font-weight: 550;
-    margin: 20px;
-}
-
-.btn.send.or{
+.ibtn.or{
     background-color: orange;
     color:white;
 }
@@ -266,6 +292,19 @@ p.l{
     padding : 10px;
     background-color: white;
     font-size: large;
+}
+
+/* root */
+.ibtn.tw{
+    margin-top: 10px;
+    color: white;
+    background-color: #1EA1F3;
+}
+
+.ibtn.face{
+    margin-top:10px;
+    color: white;
+    background-color: #385495;
 }
 
 /* mypage */
@@ -301,6 +340,17 @@ p.l{
 .view_selecter .col.active{
     background-color: orange;
     color: white;
+}
+
+.btn.rep_send{
+    position:absolute;
+    bottom:20px;
+    right:20px;
+    background-color: orange;
+    color: white;
+    font-weight:bold;
+    width: 60px;
+    height: 20px;
 }
 
 /* /Create */

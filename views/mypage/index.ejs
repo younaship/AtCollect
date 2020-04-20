@@ -12,7 +12,7 @@
         
         <div class="row">
             <div class="ibtn">
-                <p style="color:orange">＋ 投稿を作成する</p>
+                <p style="color:orange">＋ 投稿を作成</p>
                 <a href="/create" class="link" ></a>
             </div>
         </div>
@@ -40,6 +40,9 @@
             <% p.link = "/mypage/"+p.guid %>
             <%- include("../cell/post_y.ejs",p) %>
         <% } %>
+
+        
+        <a href="/signout">LOGOUT</a>
     </div>
 
 </body>

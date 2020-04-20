@@ -1,0 +1,59 @@
+<html>
+<head>
+    <%- include("../head.ejs") %>
+    <title>Wait for Signin</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body style="background-color: orange;">
+    <%- include("../header.ejs")%>
+
+    <div class="content fit">
+        <div class="row line" style="margin:5px 0">
+            <p class="w s">ログイン情報を確認しています。</p>
+        </div>
+        <div class="row line" style="margin:5px 0">
+             <p class="w s">しばらくお待ちください。</p>
+        </div>
+        <p class="row w s" id="result_message" style="margin:5px 0"></div>
+    </div>
+
+    <script>
+
+        const chk = async ()=>{ 
+            const state = await chkLoginAsync();
+            if(state && await signInSv()) return location.href = "/mypage" ;
+            return location.href = "/"
+        };
+        if(location.hash){
+            ac.chkRedSignIn(async(r)=>{
+                if(!r){
+                    $("#result_message").html("認証に失敗しました。");
+                    setTimeout(()=>location.href="/",300);
+                }else{
+                    $("#result_message").html('ようこそ@Collectへ。もう間もなく準備が整います。');
+                    if(await signInSv(r)) return location.href = "/mypage";
+                    window.alart("不明なエラーが発生しました。");
+                    location.href = "/";
+                }
+            });
+        }
+        else if(getParam("signin")) {
+            switch(getParam("signin")){
+                case "tw" : 
+                    if(!location.hash){
+                        location.hash = "on";
+                    }
+                case "face" :
+                    if(!location.hash){
+                        location.hash = "on";
+                        ac.signInWithFace();
+                    }
+            }
+        }else{
+            chk();
+        }
+    
+    </script>
+
+</body>
+</html>

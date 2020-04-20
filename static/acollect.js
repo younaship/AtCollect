@@ -27,6 +27,7 @@ function initFire(){
             ac.uid = user.uid;
             ac.fire_auth_state = user;
             ac.authIsReady = true;
+            console.log("signin : ",ac.uid)
         }
         else ac.fire_auth_state = null;
     });
@@ -35,35 +36,117 @@ function initFire(){
     console.log("fire inited.")
 }
 
+/**ログアウトします。 */
+function logout(){
+    firebase.auth().signOut();
+}
+
+function chkLoginAsync(waitCount){
+    if(!waitCount) waitCount = 30; 
+    return new Promise((x)=>{
+        console.log("waiting auth result...")
+        let int = setInterval(()=>{
+            if(waitCount>0) waitCount--;
+            else stop();
+            if( ac.fire_auth_state ){
+                console.log("complite get auth data.["+waitCount+"]");
+                stop();
+            };
+        },100);
+        function stop(){
+            clearInterval(int);
+            int = null;
+            x(ac.fire_auth_state);
+        }
+    });
+}
+
+
 async function getToken(){
     return await firebase.auth().currentUser.getIdToken(true);
 }
 
-async function signIn(){
+async function signInSv(data=null){
 
-    await firebase.auth().signInWithEmailAndPassword("a@test.jp","testuser");
     const token = await getToken();
     
-    $.ajax({
-        url:'/login',
-        type:'POST',
-        data:{
-            csrtoken : "csrfToken",
-            idtoken : token
-        }
-    })
-    // Ajaxリクエストが成功した時発動
-    .done( (data) => {
-        console.log("Ajax Success",data);
-    })
-    // Ajaxリクエストが失敗した時発動
-    .fail( (data) => {
-        console.log("Ajax Err",data);
+    return new Promise((x)=>{
+        $.ajax({
+            url:'/login',
+            type:'POST',
+            data:{
+                csrtoken : "csrfToken",
+                idtoken : token,
+                data : data
+            }
+        })
+        .done( (data) => {
+            x(true);
+        })
+        .fail( (data) => {
+            x(false);
+        })
     })
 
 }
 
+ac.chkRedSignIn = function(callback){
+
+    firebase.auth().getRedirectResult().then(function(result) {
+        if (result.credential) {
+            var token = result.credential.accessToken;
+            var secret = result.credential.secret;
+            if(callback) callback({
+                token : token,
+                secret : secret
+            });
+        }
+        var user = result.user;
+        }).catch(function(error) {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            var email = error.email;
+            var credential = error.credential;
+            if(callback) callback(null);
+        });
+    
+}
+
+ac.signInWithMail = async function(){
+    await firebase.auth().signInWithEmailAndPassword("a@test.jp","testuser");    
+}
+
+ac.signInWithTw = async function(){
+    var provider = new firebase.auth.TwitterAuthProvider();
+}
+
+ac.signInWithFace = async function(){
+    var provider = new firebase.auth.FacebookAuthProvider();
+    firebase.auth().signInWithRedirect(provider);
+}
+
 /* */
+
+ac.sendReply = function(resid,reply){
+    return new Promise((x)=>{
+        $.ajax({
+            url : '/rep/' +  resid,
+            type : 'POST',
+            data : {
+                message : reply
+            }
+        })
+        .done( (data) => {
+            console.log("Ajax Success",data);
+            if(data.status == "success") x(true);
+            else x(false);
+        })
+        .fail( (data) => {
+            console.log("Ajax Err",data);
+            x(null)
+        });
+    }) 
+}
 
 async function sendMessage(postid,message){  // No Use
     var token = await getToken();
@@ -90,4 +173,24 @@ function setCookie(key,val){
 }
 function getCookie(key){
     return Cookies.get(key);
+}
+
+/* Tool */
+function getParam(name) {
+    const url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+function isHarfEisu(str){
+  str = (str==null)?"":str;
+  if(str.match(/^[A-Za-z0-9]+$/)){
+    return true;
+  }else{
+    return false;
+  }
 }

@@ -4,7 +4,7 @@
     <title>My/Post</title>
 </head>
 <body>
-    <%- include("../../header.ejs")%>
+    <%- include("../../header.ejs",{title:"投稿の返信一覧"})%>
 
     <div class="bg_or" ></div>
 
@@ -25,17 +25,81 @@
         </div>
 
         <div class="view_aria" id="nocheck">
+                        
+            <p class="row" style="color:gray;font-size:small;">メッセージをタップすると返信することができます。</p>
+
             <% for(var p of nocheck){ %>
-                <% p.link = "" %>
-                <%- include("../../cell/post_b.ejs",p) %>
+
+                <div class="post_with" id="<%= p.guid %>">
+                    <div class="post sw" style="top:0;z-index: 1;">
+                        <img src="/img/card_b.png" />
+                        <div class="message">
+                            <p><%= p.message %></p>
+                        </div>
+                    </div>
+                    <div class="post" style="bottom:0;">
+                        <img src="/img/card_y.png"/>
+                        <div class="message">
+                            <textarea class="in_text" style="margin-top:20px;" maxlength="50" 
+                                placeholder="返信を入力" name="message" id="<%= p.guid %>_tx"></textarea>
+                        </div>
+                        <input type="button" value="OK" class="btn rep_send" id="<%= p.guid %>_btn"/>
+                    
+                        <script>
+                        
+                            $("#<%= p.guid %>_btn").click(async()=>{
+                                const guid = "<%= p.guid %>";
+                                const message = "<%= p.message %>";
+                                const reply = $(`#${guid}_tx`).val();
+                                if(!reply) return;
+                                moveToChecked($(`#${guid}`),message,reply);
+                                if(!await ac.sendReply(guid,reply)) window.alert("不明なエラーが発生しました。何度も同じエラーが出る場合、お問い合わせから報告ください。");
+                            })
+
+                        </script>
+
+                    </div>
+                </div>
+
             <% } %>
+            <script>            
+                function moveToChecked(jObj,message,reply){
+                    const TEMPLATE = `
+                    <div class="post_with open">
+                        <div class="post sw" style="top:0;z-index: 1;">
+                            <img src="/img/card_b.png" />
+                            <div class="message">
+                                <p>${message}</p>
+                            </div>
+                        </div>
+                        <div class="post" style="bottom:0;">
+                            <img src="/img/card_y.png"/>
+                            <div class="message">
+                                <p style="margin-top:20px">${reply}</p>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                    jObj.addClass("trans");
+                    $("#checked").prepend(TEMPLATE);
+                    
+                    $(".post_with .sw").click(function(){
+                        $(this).parent().hasClass("open") ? $(this).parent().removeClass("open") : $(this).parent().addClass("open");
+                    })
+
+                    setTimeout(()=>{
+                        jObj.remove();
+                    },500);
+                }
+
+            </script>
         </div>
 
         <div class="view_aria none" id="checked">
             <% for(var p of checked){ %>
 
                 <div class="post_with open">
-                    <div class="post" style="top:0;z-index: 1;">
+                    <div class="post sw" style="top:0;z-index: 1;">
                         <img src="/img/card_b.png" />
                         <div class="message">
                             <p><%= p.message %></p>
@@ -67,6 +131,10 @@
                 $("#checked").addClass("none");
                 $("#nocheck").removeClass("none");
             }
+        });
+
+        $(".post_with .sw").click(function(){
+            $(this).parent().hasClass("open") ? $(this).parent().removeClass("open") : $(this).parent().addClass("open");
         })
     </script>
 

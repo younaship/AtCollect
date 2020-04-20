@@ -1,11 +1,30 @@
 <html>
-    <head>
-        <%- include("./head.ejs") %>
-        <% console.log("HELLO"); %>
-    </head>
-    <body>
-        <script>
-            signIn();
-        </script>
-    </body>
+<head>
+    <%- include("./head.ejs") %>
+    <title>My/Post</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body style="background-color: orange;">
+    <%- include("./header.ejs")%>
+
+    <div class="content fit">
+        <div class="row line" style="margin:5px 0">
+            <p class="w xl">@Collectとは？</p>
+            <p class="w s">自分の投稿に匿名でコメントを募集するアプリです。</p>
+        </div>
+
+        <div class="info_box">
+
+        </div>
+
+        <p class="w xs" style="margin-top:10px;">どの方法でログインしても同意なしに投稿・フォローなどがされることはありません</p>
+
+        <input type="button" class="ibtn tw" style="background-color:"
+            onclick="location.href='/signin?signin=tw'" value="Twitterではじめる"/>
+        <input type="button" class="ibtn face"
+            onclick="location.href='/signin?signin=face'" value="FaceBookではじめる"/>
+
+    </div>
+
+</body>
 </html>

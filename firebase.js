@@ -64,7 +64,7 @@ exports.getPosts = function(uid,start = 0,size = 10){
 /** 投稿に対する匿名コメント一覧を取得します。 */
 exports.getRes = function(postid){
   return new Promise((x)=>{
-    var q = db.collection("/res").where("to","==",postid).orderBy("time").limit(100);
+    var q = db.collection("/res").where("to","==",postid).orderBy("time","desc").limit(100);
     q.onSnapshot((snap)=>{
       var data = [];
       for(var d of snap.docs) data.push(d.data());
@@ -78,12 +78,22 @@ exports.getRes = function(postid){
 
 /** 匿名コメントをします。 */
 exports.addRes = function(postid,message){
-  return new Promise((x)=>{
-    db.collection("/res/").add({
-      to : postid,
-      message : message,
-      time : admin.firestore.FieldValue.serverTimestamp(),
-    }).then((r)=>x(r)).catch((e)=>x(null));
+  return new Promise(async(x)=>{
+    try{
+      var r = await db.collection("/res/").add({
+        to : postid,
+        message : message,
+        time : admin.firestore.FieldValue.serverTimestamp(),
+      });
+      
+      r.update({
+        guid : r.id
+      });
+      x(r.id);
+    
+    }catch(e){
+      x(null);
+    }
   })
 }
 
@@ -146,7 +156,20 @@ exports.createPost = function(uid,message){
   })
 }
 
+/**ユーザーを作成、IDを返します。 */
+exports.createUser = function(uid,id){
+  return new Promise(async(x)=>{
+    var ref = await db.collection("/users").add({
+      uid : uid,
+      id : id,
+      time : admin.firestore.FieldValue.serverTimestamp(),
+    }).catch((e)=>console.error(e));
+    x(ref.id);
+  })
+}
+
 exports.chackSession = function(sessionCookie){
+  if(!sessionCookie) return false;
   return new Promise((x)=>{
     admin.auth().verifySessionCookie( sessionCookie, true )
       .then((decodedClaims) => {
