@@ -1,0 +1,74 @@
+<html>
+<head>
+    <%- include("../../head.ejs") %>
+    <title>My/Post</title>
+</head>
+<body>
+    <%- include("../../header.ejs")%>
+
+    <div class="bg_or" ></div>
+
+    <div class="top_area pd">
+        <div class="post">
+            <img src="/img/card_y.png" />
+            <div class="message">
+                <p><%- post.message %></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="content pd">
+
+        <div class="view_selecter">
+            <p class="col nocheck active" type="nocheck">未回答</p>
+            <p class="col checked" type="checked">回答済み</p>
+        </div>
+
+        <div class="view_aria" id="nocheck">
+            <% for(var p of nocheck){ %>
+                <% p.link = "" %>
+                <%- include("../../cell/post_b.ejs",p) %>
+            <% } %>
+        </div>
+
+        <div class="view_aria none" id="checked">
+            <% for(var p of checked){ %>
+
+                <div class="post_with open">
+                    <div class="post" style="top:0;z-index: 1;">
+                        <img src="/img/card_b.png" />
+                        <div class="message">
+                            <p><%= p.message %></p>
+                        </div>
+                    </div>
+                    <div class="post" style="bottom:0;">
+                        <img src="/img/card_y.png"/>
+                        <div class="message">
+                            <p style="margin-top:20px"><%= p.reply %></p>
+                        </div>
+                    </div>
+                </div>
+                
+            <% } %>
+        </div>
+
+    </div>
+
+    <script>
+        $(".view_selecter p").click(function(){
+            const id = $(this).attr("type");
+            $(".view_selecter p").removeClass("active");
+            $(".view_selecter ."+id).addClass("active");
+
+            if(id=="checked"){
+                $("#checked").removeClass("none");
+                $("#nocheck").addClass("none");
+            }else{
+                $("#checked").addClass("none");
+                $("#nocheck").removeClass("none");
+            }
+        })
+    </script>
+
+</body>
+</html>

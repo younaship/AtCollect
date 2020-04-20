@@ -1,0 +1,35 @@
+<html>
+<head>
+    <%- include("../head.ejs") %>
+    <title>My/Post</title>
+</head>
+<body>
+    <%- include("../header.ejs")%>
+
+    <div class="bg_or" ></div>
+
+    <form action="/create" method="POST">
+
+    <div class="top_area">
+        <div class="row">
+            <p class="title">新規投稿</p>
+        </div>
+
+        <div class="post">
+            <img src="/img/card_y.png" />
+            <div class="message">
+                <textarea class="in_text" maxlength="128" placeholder="投稿を入力..." name="message"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="content pd">
+        <div class="row">
+            <input type="submit" class="btn send or" value="作成する"/>
+        </div>
+    </div>
+    
+    </form>
+
+</body>
+</html>
