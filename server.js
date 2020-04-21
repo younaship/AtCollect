@@ -76,8 +76,6 @@ app.get("/mypage",async function (req, res) { // ログイン・登録後もこ�
     res.render("./mypage/",data);
 });
 
-<<<<<<< Updated upstream
-=======
 app.get("/every",async function (req, res) { // ログイン・登録後もここ
     const posts = await fire.getQuestionToEvery();
     if(!posts) return pushNotFound(res);
@@ -108,7 +106,6 @@ app.get("/myquestion",async function (req, res) { // ログイン・登録後も
     res.render("./mypage/question.ejs",data);
 });
 
->>>>>>> Stashed changes
 app.get("/mypage/:postid",async function (req, res) {
     const postid = req.params.postid;
     const uid = await getUidFromSession(req); // Auth
@@ -208,8 +205,6 @@ app.post("/res/:postid",async function(req,res){
     res.end();
 });
 
-<<<<<<< Updated upstream
-=======
 /**質問をPOST */
 app.post("/q/:uid",async function(req,res){
     const uid = req.params.uid;
@@ -224,7 +219,6 @@ app.post("/q/:uid",async function(req,res){
     res.end();
 });
 
->>>>>>> Stashed changes
 /**アカウントID作成 Ajax */
 app.post("/mkuser",async function(req,res){
 

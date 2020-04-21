@@ -148,24 +148,6 @@ ac.sendReply = function(resid,reply){
     }) 
 }
 
-<<<<<<< Updated upstream
-async function sendMessage(postid,message){  // No Use
-    var token = await getToken();
-    $.ajax({
-        url : '/send/' + postid ,
-        type : 'POST',
-        data : {
-            token : token,
-            message : message
-        }
-    })
-    .done( (data) => {
-        console.log("Ajax Success",data);
-    })
-    .fail( (data) => {
-        console.log("Ajax Err",data);
-    })
-=======
 ac.sendAnswer = function(qid,reply){
     return new Promise((x)=>{
         $.ajax({
@@ -208,7 +190,6 @@ ac.sendQusetionToMe = function(message){
             x(false);
         })
     });
->>>>>>> Stashed changes
 }
 
 

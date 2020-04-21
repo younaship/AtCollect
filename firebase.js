@@ -46,8 +46,6 @@ exports.getNewPostOnUser = function(uid){
   });
 }
 
-<<<<<<< Updated upstream
-=======
 /** uidへの質問一覧を取得 */
 exports.getQuestionToEvery = function(start = 0,size = 10){
   return new Promise((x)=>{
@@ -78,7 +76,6 @@ exports.getQuestionToMe = function(uid,start = 0,size = 10){
   });
 }
 
->>>>>>> Stashed changes
 /** ユーザーの投稿一覧を取得します。 */
 exports.getPosts = function(uid,start = 0,size = 10){
   return new Promise((x)=>{
@@ -130,8 +127,6 @@ exports.addRes = function(postid,message){
   })
 }
 
-<<<<<<< Updated upstream
-=======
 /** uidへ匿名質問をします。*/
 exports.addQue = function(uid,message,private = false){
   return new Promise(async(x)=>{
@@ -154,7 +149,6 @@ exports.addQue = function(uid,message,private = false){
   })
 }
 
->>>>>>> Stashed changes
 /** 匿名コメントにリプします。 */
 exports.setResReply = function(guid,message){
   return new Promise((x)=>{
