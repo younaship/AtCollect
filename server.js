@@ -218,9 +218,11 @@ app.post("/res/:postid",async function(req,res){
 app.post("/q/:uid",async function(req,res){
     const uid = req.params.uid;
     const message = req.body.message;
+    const pri = req.body.pri ? true : false;
+
     if(!uid||!message) return pushNotFound(res);
 
-    await fire.addQue(uid,message);
+    await fire.addQue(uid,message,pri);
     res.render("./user/sended.ejs",{message:message});
     res.end();
 });
