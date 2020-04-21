@@ -1,23 +1,12 @@
 <html>
 <head>
-    <%- include("../../head.ejs") %>
-    <title>My/Post</title>
+    <%- include("../head.ejs") %>
+    <title>マイページ</title>
 </head>
 <body>
-    <%- include("../../header.ejs",{title:"投稿の返信一覧"})%>
+    <%- include("../header.ejs",{title:"自分への質問"})%>
 
-    <div class="bg_or" ></div>
-
-    <div class="top_area pd">
-        <div class="post">
-            <img src="/img/card_y.png" />
-            <div class="message">
-                <p><%- post.message %></p>
-            </div>
-        </div>
-    </div>
-
-    <div class="content pd">
+    <div class="content">
 
         <div class="view_selecter">
             <p class="col nocheck active" type="nocheck">未回答</p>
@@ -118,27 +107,7 @@
 
     </div>
 
-    <script>
-        $(".view_selecter p").click(function(){
-            const id = $(this).attr("type");
-            $(".view_selecter p").removeClass("active");
-            $(".view_selecter ."+id).addClass("active");
-
-            if(id=="checked"){
-                $("#checked").removeClass("none");
-                $("#nocheck").addClass("none");
-            }else{
-                $("#checked").addClass("none");
-                $("#nocheck").removeClass("none");
-            }
-        });
-
-        $(".post_with .sw").click(function(){
-            $(this).parent().hasClass("open") ? $(this).parent().removeClass("open") : $(this).parent().addClass("open");
-        })
-    </script>
-
-    <%- include("../../footer.ejs")%>
+    <%- include("../footer.ejs")%>
 
 </body>
 </html>

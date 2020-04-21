@@ -1,10 +1,10 @@
 <html>
 <head>
     <%- include("../head.ejs") %>
-    <title>MyPage</title>
+    <title>マイページ</title>
 </head>
 <body>
-    <%- include("../header.ejs")%>
+    <%- include("../header.ejs",{title:"マイページ"})%>
 
     <div class="bg_or" ></div>
 
@@ -17,12 +17,11 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="post" style="margin-top:5px;">
+        <div class="row" style="margin-top:6px">
+            <div class="post" >
                 <img src="/img/card_b.png" />
                 <div class="message" style="flex-direction: column;">
                     <p>あなたの質問回答ページ</p> 
-                    <!--<a class="b" href="https://at-collect.net/u/<%= user.id %>/" >https://at-collect.net/u/<%= user.id %>/</a> -->
                     <a class="b" href="/u/<%= user.id %>/" >https://at-collect.net/u/<%= user.id %>/</a>
                 </div>
             </div>
@@ -32,7 +31,7 @@
 
     <div class="content pd">
 
-        <div class="row" style="margin:5px 0;">
+        <div class="row" style="margin:6px 0;">
             <p style="color:gray">投稿一覧</p>
         </div>
 
@@ -42,8 +41,10 @@
         <% } %>
 
         
-        <a href="/signout">LOGOUT</a>
+        <a class="row xs" href="/signout" style="color:blue;margin-top:20px;">ログアウト</a>
     </div>
+
+    <%- include("../footer.ejs")%>
 
 </body>
 </html>

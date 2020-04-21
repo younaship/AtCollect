@@ -46,6 +46,36 @@ exports.getNewPostOnUser = function(uid){
   });
 }
 
+/** uidへの質問一覧を取得 */
+exports.getQuestionToEvery = function(start = 0,size = 10){
+  return new Promise((x)=>{
+    var q = db.collection("/question").orderBy("time","desc").limit(start+size);
+    q.onSnapshot((snap)=>{
+      var data = [];
+      for(var d of snap.docs) data.push(d.data());
+      x(data);
+    },(e)=>{
+      console.error(e)
+      x(null)
+    })
+  });
+}
+
+/** uidへの質問一覧を取得 */
+exports.getQuestionToMe = function(uid,start = 0,size = 10){
+  return new Promise((x)=>{
+    var q = db.collection("/question").where("to","==",uid).orderBy("time","desc").limit(start+size);
+    q.onSnapshot((snap)=>{
+      var data = [];
+      for(var d of snap.docs) data.push(d.data());
+      x(data);
+    },(e)=>{
+      console.error(e)
+      x(null)
+    })
+  });
+}
+
 /** ユーザーの投稿一覧を取得します。 */
 exports.getPosts = function(uid,start = 0,size = 10){
   return new Promise((x)=>{
@@ -82,6 +112,27 @@ exports.addRes = function(postid,message){
     try{
       var r = await db.collection("/res/").add({
         to : postid,
+        message : message,
+        time : admin.firestore.FieldValue.serverTimestamp(),
+      });
+      
+      r.update({
+        guid : r.id
+      });
+      x(r.id);
+    
+    }catch(e){
+      x(null);
+    }
+  })
+}
+
+/** uidへ匿名質問をします。*/
+exports.addQue = function(uid,message){
+  return new Promise(async(x)=>{
+    try{
+      var r = await db.collection("/q/").add({
+        to : uid,
         message : message,
         time : admin.firestore.FieldValue.serverTimestamp(),
       });

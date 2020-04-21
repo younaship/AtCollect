@@ -118,6 +118,7 @@ ac.signInWithMail = async function(){
 
 ac.signInWithTw = async function(){
     var provider = new firebase.auth.TwitterAuthProvider();
+    firebase.auth().signInWithRedirect(provider);
 }
 
 ac.signInWithFace = async function(){
@@ -148,22 +149,26 @@ ac.sendReply = function(resid,reply){
     }) 
 }
 
-async function sendMessage(postid,message){  // No Use
-    var token = await getToken();
-    $.ajax({
-        url : '/send/' + postid ,
-        type : 'POST',
-        data : {
-            token : token,
-            message : message
-        }
-    })
-    .done( (data) => {
-        console.log("Ajax Success",data);
-    })
-    .fail( (data) => {
-        console.log("Ajax Err",data);
-    })
+ac.sendQusetionToMe = function(message){ 
+    const uid = ac.uid;
+    if(!uid) return;
+    return new Promise((x)=>{
+        $.ajax({
+            url : '/q/' + uid ,
+            type : 'POST',
+            data : {
+                message : message
+            }
+        })
+        .done( (data) => {
+            console.log("Ajax Success",data);
+            x(true);
+        })
+        .fail( (data) => {
+            console.log("Ajax Err",data);
+            x(false);
+        })
+    });
 }
 
 

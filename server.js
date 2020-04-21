@@ -34,6 +34,15 @@ app.use("/", express.static( __dirname + "/static"));
 app.set("view engine", "ejs");
 
 app.get("/",async function (req, res) {
+    var session = req.cookies.session;
+    console.log("s is",session)
+    if(session) {
+        res.writeHead(302, {
+            'Location': '/mypage'
+        }); // ログイン中リダイレクト
+        res.end();
+        return;
+    }
     res.render("./index.ejs");
 });
 
@@ -45,12 +54,12 @@ app.get("/u/:id",async function (req, res) {
     if(!user || !user.uid) return pushNotFound(res);
 
     const post = await fire.getNewPostOnUser(user.uid);
-    if(!post) return res.render("./res/nopost.ejs",{name:id})
+    //if(!post) return res.render("./res/nopost.ejs",{name:id})
 
-    res.writeHead(302, {
-        'Location': '/res/'+post.guid
+    res.render("./user/",{
+        post : post,
+        user : user
     });
-    res.end();
 });
 
 app.get("/mypage",async function (req, res) { // ログイン・登録後もここ
@@ -74,6 +83,29 @@ app.get("/mypage",async function (req, res) { // ログイン・登録後もこ�
     }
     console.log(data)
     res.render("./mypage/",data);
+});
+
+app.get("/every",async function (req, res) { // ログイン・登録後もここ
+    const posts = await fire.getQuestionToEvery();
+    if(!posts) return pushNotFound(res);
+
+    var data = {
+        posts : posts
+    }
+
+    res.render("./every/",data);
+});
+
+app.get("/myquestion",async function (req, res) { // ログイン・登録後もここ
+    const uid = await getUidFromSession(req); // Auth
+    if(!uid) return pushNullSession(res);
+
+    var data = {
+        nocheck : [],
+        checked : [],
+    }
+
+    res.render("./mypage/question.ejs",data);
 });
 
 app.get("/mypage/:postid",async function (req, res) {
@@ -157,6 +189,17 @@ app.post("/res/:postid",async function(req,res){
     if(!r) return pushNotFound(res); 
     
     res.render("./res/sended.ejs",{message:message});
+    res.end();
+});
+
+/**質問をPOST */
+app.post("/q/:uid",async function(req,res){
+    const uid = req.params.uid;
+    const message = req.body.message;
+    if(!uid||!message) return pushNotFound(res);
+
+    await fire.addQue(uid,message);
+    res.render("./user/sended.ejs",{message:message});
     res.end();
 });
 
