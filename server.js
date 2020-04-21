@@ -76,6 +76,39 @@ app.get("/mypage",async function (req, res) { // ログイン・登録後もこ�
     res.render("./mypage/",data);
 });
 
+<<<<<<< Updated upstream
+=======
+app.get("/every",async function (req, res) { // ログイン・登録後もここ
+    const posts = await fire.getQuestionToEvery();
+    if(!posts) return pushNotFound(res);
+
+    var data = {
+        posts : posts
+    }
+
+    res.render("./every/",data);
+});
+
+app.get("/myquestion",async function (req, res) { // ログイン・登録後もここ
+    const uid = await getUidFromSession(req); // Auth
+    if(!uid) return pushNullSession(res);
+
+    const qss = await fire.getQuestionToMe(uid);
+
+    var data = {
+        nocheck : [],
+        checked : [],
+    }
+
+    if(qss) for(var q of qss){
+        if(q["reply"]) data.checked.push(q);
+        else data.nocheck.push(q);
+    }
+
+    res.render("./mypage/question.ejs",data);
+});
+
+>>>>>>> Stashed changes
 app.get("/mypage/:postid",async function (req, res) {
     const postid = req.params.postid;
     const uid = await getUidFromSession(req); // Auth
@@ -147,6 +180,21 @@ app.post("/rep/:resid",async function(req,res){
     res.end();
 });
 
+/**質問に回答します。Answer : Ajax */
+app.post("/myquestion/:qid",async function (req, res) { 
+    const qid = req.params.qid;
+    const message = req.body.message;
+    if(!qid||!message) return pushNotFound(res);
+
+    const uid = await getUidFromSession(req); // Auth
+    if(!uid) return pushNullSession(res);
+
+    fire.setAnswer(qid,message);
+    
+    res.json({status:"success"});
+    res.end();
+});
+
 app.post("/res/:postid",async function(req,res){
     const postid = req.params.postid;
     const message = req.body.message;
@@ -160,6 +208,23 @@ app.post("/res/:postid",async function(req,res){
     res.end();
 });
 
+<<<<<<< Updated upstream
+=======
+/**質問をPOST */
+app.post("/q/:uid",async function(req,res){
+    const uid = req.params.uid;
+    const message = req.body.message;
+    const pri = req.body.pri ? true : false;
+    console.log(req.body)
+    if(!uid||!message) return pushNotFound(res);
+    console.log("push Question to "+uid)
+
+    await fire.addQue(uid,message,pri);
+    res.render("./user/sended.ejs",{message:message});
+    res.end();
+});
+
+>>>>>>> Stashed changes
 /**アカウントID作成 Ajax */
 app.post("/mkuser",async function(req,res){
 
@@ -218,6 +283,8 @@ app.get('/signout', (req, res) => { // GET
     res.render("./signout/")
 });
 
+/* ------ */
+
 const sv = https.createServer( OPTIONS, app );
 
 sv.listen(443,()=>{
@@ -231,10 +298,6 @@ const sv2 = http.createServer(app2);
 sv2.listen(80,()=>{
     console.log("start echo on http.")
 });
-
-function checkSession(res){
-    
-}
 
 function _checkSessionInTime(timestamp){
     const LIFE_TIME = 60 * 60 * 1000; // (1h)

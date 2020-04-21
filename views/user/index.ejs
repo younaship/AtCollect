@@ -1,12 +1,69 @@
 <html>
 <head>
     <%- include("../head.ejs") %>
+<<<<<<< Updated upstream
     <title><%- name %>さんの最新投稿</title>
 </head>
 <body>
     <%- include("../header.ejs")%>
     <div class="content">
         <div class="bg_or" ></div>
+=======
+    <link rel="stylesheet" href="/user.css">
+    <title>「<%= user.name %>」さんに匿名メッセージを送ろう</title>
+</head>
+<body>
+    <%- include("../header.ejs",{style:"background-color: rgb(30,100,255);"})%>
+
+    <div class="bg_bl" style="height:240px;"></div>
+
+    <div class="top_area">
+
+        <div class="row">
+            <p class="w xs">「<%= user.name %>」さんが投稿したメッセージもあります！</p>
+        </div>
+        <div class="row">
+            <p class="w xs">匿名メッセージを送りましょう！</p>
+        </div>
+
+        <div class="row">
+            <div class="post mini">
+                <img src="/img/card_y.png" />
+                <div class="message">
+                    <p><%- post.message %></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form action="/q/<%= user.uid %>" method="POST">
+    <div class="content pd">
+
+        <div class="row">
+            <p class="b" ><b>「<%= user.name %>」さんに質問をしよう！</b></p>
+        </div>
+
+        <div class="post">
+            <img src="/img/card_b.png" />
+            <div class="message">
+                <textarea class="in_text" maxlength="128" placeholder="質問を入力" name="message"></textarea>
+            </div>
+        </div>       
+
+        <div class="row" style="margin-top:15px 0">
+            <input type="checkbox" name="pri" id="chk_pri" ><label for="chk_pri" class="s">プライベートな質問として送信</label>
+        </div>
+        <div class="row" style="margin-bottom:15px 0;color:gray;">
+            <p class="xs">プライベートに設定すると「みんなの投稿」に投稿されなくなります。</p>
+        </div>
+        
+
+        <div class="row" style="margin:20px 0">
+            <input type="submit" class="ibtn send" value="送信"/>
+        </div>
+
+        <p class="xs" style="margin:10px;color:gray;">※匿名でメッセージを送ることができますが、誹謗中傷などを送信した場合ブロック・その他対処を行うこともあります。詳しくは利用規約をお読みください。</p>
+>>>>>>> Stashed changes
     </div>
 
     <%- include("../cell/post_b.ejs",{message:""}) %>

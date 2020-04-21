@@ -1,0 +1,49 @@
+<html>
+<head>
+    <%- include("../head.ejs") %>
+    <title>マイページ</title>
+</head>
+<body>
+    <%- include("../header.ejs",{title:"みんなの質問"})%>
+
+    <div class="content">
+
+        <div class="view_aria" id="every">
+
+            <% for(var p of posts){ %>
+
+                <div class="post_with" id="<%= p.guid %>">
+                    <div class="post" style="top:0;z-index: 1;">
+                        <img src="/img/card_b.png" />
+                        <div class="message">
+                            <p><%= p.message %></p>
+                        </div>
+                    </div>
+
+                    <script>
+                    
+                        $("#<%= p.guid %>").click(async function(){
+                            console.log("clciked")
+                            const message = "<%= p.message %>";
+                            const jObj = $(this).addClass("trans");
+                            const res = await ac.sendQusetionToMe(message);
+                            console.log("RESULT",res)
+                            setTimeout(()=>{
+                                jObj.remove();
+                            },500);
+                        })
+
+                    </script>
+
+                    
+                </div>
+
+            <% } %>
+        </div>
+
+    </div>
+
+    <%- include("../footer.ejs")%>
+
+</body>
+</html>

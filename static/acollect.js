@@ -148,6 +148,7 @@ ac.sendReply = function(resid,reply){
     }) 
 }
 
+<<<<<<< Updated upstream
 async function sendMessage(postid,message){  // No Use
     var token = await getToken();
     $.ajax({
@@ -164,6 +165,50 @@ async function sendMessage(postid,message){  // No Use
     .fail( (data) => {
         console.log("Ajax Err",data);
     })
+=======
+ac.sendAnswer = function(qid,reply){
+    return new Promise((x)=>{
+        $.ajax({
+            url : '/myquestion/' +  qid,
+            type : 'POST',
+            data : {
+                message : reply
+            }
+        })
+        .done( (data) => {
+            console.log("Ajax Success",data);
+            if(data.status == "success") x(true);
+            else x(false);
+        })
+        .fail( (data) => {
+            console.log("Ajax Err",data);
+            x(null)
+        });
+    }) 
+}
+
+ac.sendQusetionToMe = function(message){ 
+    const uid = ac.uid;
+    if(!uid) return;
+    return new Promise((x)=>{
+        $.ajax({
+            url : '/q/' + uid ,
+            type : 'POST',
+            data : {
+                message : message,
+                pri : true
+            }
+        })
+        .done( (data) => {
+            console.log("Ajax Success",data);
+            x(true);
+        })
+        .fail( (data) => {
+            console.log("Ajax Err",data);
+            x(false);
+        })
+    });
+>>>>>>> Stashed changes
 }
 
 

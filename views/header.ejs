@@ -1,5 +1,10 @@
-<% var title; %>
+<% var title,style; %>
+
+<% if(style){ %>
+<header class="header" style="<%= style %>">
+<% }else{ %>
 <header class="header">
+<% } %>
     <% if(title){ %>
     <p class="title"><%=  title %></p>
     <% } %>

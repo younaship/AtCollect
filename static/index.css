@@ -1,6 +1,7 @@
 body{
     margin: 0;
     font-family: 'Hiragino Kaku Gothic ProN','ヒラギノ角ゴ ProN W3','メイリオ', 'Meiryo','Yu Gothic UI',sans-serif;
+    background-color: whitesmoke;
 }
 
 textarea{
@@ -16,7 +17,7 @@ p{
     margin: 0;
 }
 
-input{
+input[type="button"],input[type="text"]{
     border: none;
     box-shadow: 1px 1px 5px 1px gray;
     -webkit-appearance: none;
@@ -93,10 +94,15 @@ input:active{
     left: 0;
     top: 170px;
     width: 100%;
+    padding-bottom: 60px;
 }
 
 .content.pd{
+<<<<<<< Updated upstream
     padding-top: 110px;
+=======
+    top: 270px;
+>>>>>>> Stashed changes
 }
 
 .content.fit{
@@ -139,6 +145,10 @@ a.link{
 
 .b{
     color: rgb(30,100,255);
+}
+
+.or{
+    color: orange;
 }
 
 .btn:active{
