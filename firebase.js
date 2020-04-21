@@ -49,7 +49,7 @@ exports.getNewPostOnUser = function(uid){
 /** uidへの質問一覧を取得 */
 exports.getQuestionToEvery = function(start = 0,size = 10){
   return new Promise((x)=>{
-    var q = db.collection("/question").orderBy("time","desc").limit(start+size);
+    var q = db.collection("/question").where("pri","==",false).orderBy("time","desc").limit(start+size);
     q.onSnapshot((snap)=>{
       var data = [];
       for(var d of snap.docs) data.push(d.data());
@@ -127,14 +127,17 @@ exports.addRes = function(postid,message){
   })
 }
 
+<<<<<<< Updated upstream
+=======
 /** uidへ匿名質問をします。*/
-exports.addQue = function(uid,message){
+exports.addQue = function(uid,message,private = false){
   return new Promise(async(x)=>{
     try{
-      var r = await db.collection("/q/").add({
+      var r = await db.collection("/question/").add({
         to : uid,
         message : message,
         time : admin.firestore.FieldValue.serverTimestamp(),
+        pri : private
       });
       
       r.update({
@@ -148,10 +151,20 @@ exports.addQue = function(uid,message){
   })
 }
 
+>>>>>>> Stashed changes
 /** 匿名コメントにリプします。 */
 exports.setResReply = function(guid,message){
   return new Promise((x)=>{
     db.doc("/res/"+guid).update({
+      reply : message
+    }).then((r)=>x(r)).catch((e)=>x(null));
+  })
+}
+
+/** 質問にリプします。 */
+exports.setAnswer = function(guid,message){
+  return new Promise((x)=>{
+    db.doc("/question/"+guid).update({
       reply : message
     }).then((r)=>x(r)).catch((e)=>x(null));
   })
