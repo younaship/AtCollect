@@ -127,8 +127,6 @@ exports.addRes = function(postid,message){
   })
 }
 
-<<<<<<< Updated upstream
-=======
 /** uidへ匿名質問をします。*/
 exports.addQue = function(uid,message,private = false){
   return new Promise(async(x)=>{
@@ -151,7 +149,6 @@ exports.addQue = function(uid,message,private = false){
   })
 }
 
->>>>>>> Stashed changes
 /** 匿名コメントにリプします。 */
 exports.setResReply = function(guid,message){
   return new Promise((x)=>{

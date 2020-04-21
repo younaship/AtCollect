@@ -96,13 +96,20 @@ app.get("/every",async function (req, res) { // ログイン・登録後もこ�
     res.render("./every/",data);
 });
 
-app.get("/myquestion",async function (req, res) { // ログイン・登録後もここ
+app.get("/myquestion",async function (req, res) { 
     const uid = await getUidFromSession(req); // Auth
     if(!uid) return pushNullSession(res);
 
     var data = {
         nocheck : [],
         checked : [],
+    }
+
+    var qss = await fire.getQuestionToMe(uid);
+
+    if(qss) for(var r of qss){
+        if(r["reply"]) data.checked.push(r);
+        else data.nocheck.push(r);
     }
 
     res.render("./mypage/question.ejs",data);
@@ -174,6 +181,21 @@ app.post("/rep/:resid",async function(req,res){
     if(!uid) return pushNullSession(res);
 
     fire.setResReply(resid,message);
+    
+    res.json({status:"success"});
+    res.end();
+});
+
+/** 質問に回答 Ajax */
+app.post("/myquestion/:qid",async function(req,res){
+    const qid = req.params.qid;
+    const message = req.body.message;
+    if(!qid||!message) return pushNotFound(res);
+
+    const uid = await getUidFromSession(req); // Auth
+    if(!uid) return pushNullSession(res);
+
+    fire.setAnswer(qid,message);
     
     res.json({status:"success"});
     res.end();

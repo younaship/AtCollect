@@ -42,7 +42,7 @@
                                 const reply = $(`#${guid}_tx`).val();
                                 if(!reply) return;
                                 moveToChecked($(`#${guid}`),message,reply);
-                                if(!await ac.sendReply(guid,reply)) window.alert("不明なエラーが発生しました。何度も同じエラーが出る場合、お問い合わせから報告ください。");
+                                if(!await ac.sendAnswer(guid,reply)) window.alert("不明なエラーが発生しました。何度も同じエラーが出る場合、お問い合わせから報告ください。");
                             })
 
                         </script>
@@ -106,6 +106,26 @@
         </div>
 
     </div>
+    
+    <script>
+        $(".view_selecter p").click(function(){
+            const id = $(this).attr("type");
+            $(".view_selecter p").removeClass("active");
+            $(".view_selecter ."+id).addClass("active");
+
+            if(id=="checked"){
+                $("#checked").removeClass("none");
+                $("#nocheck").addClass("none");
+            }else{
+                $("#checked").addClass("none");
+                $("#nocheck").removeClass("none");
+            }
+        });
+
+        $(".post_with .sw").click(function(){
+            $(this).parent().hasClass("open") ? $(this).parent().removeClass("open") : $(this).parent().addClass("open");
+        })
+    </script>
 
     <%- include("../footer.ejs")%>
 
