@@ -6,38 +6,48 @@
 <body>
     <%- include("../header.ejs",{title:"マイページ"})%>
 
-    <div class="bg_or" ></div>
+    <div class="content">
 
-    <div class="top_area">
-        
-        <div class="row">
-            <div class="ibtn">
-                <p style="color:orange">＋ 投稿を作成</p>
+        <div class="row" style="padding:20px 0;">
+            <div class="ibtn or">
+                <p style="color:white">＋ 投稿を作成</p>
                 <a href="/create" class="link" ></a>
             </div>
         </div>
 
-        <div class="row" style="margin-top:6px">
-            <div class="post" >
-                <img src="/img/card_b.png" />
-                <div class="message" style="flex-direction: column;">
-                    <p>あなたの質問回答ページ</p> 
-                    <a class="b" href="/u/<%= user.id %>/" >https://at-collect.net/u/<%= user.id %>/</a>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="content pd">
-
-        <div class="row" style="margin:6px 0;">
-            <p style="color:gray">投稿一覧</p>
-        </div>
-
+        <% var post_i = 0;%>
         <% for(var p of posts){ %>
-            <% p.link = "/mypage/"+p.guid %>
-            <%- include("../cell/post_y.ejs",p) %>
+            <% if(post_i==0 ) {%>
+                <div class="row c">
+                    <p class="g" style="width:calc(100% - 20px)"><b>募集中の投稿</b></p>
+                    <% p.link = "/mypage/"+p.guid %>
+                    <%- include("../cell/post_y.ejs",p) %>
+                    <div class="ibtn btn" id="btn_getlink">
+                        <img src="/img/clip.png" style="height:20px;margin-right: 10px" />
+                        <p class="o">回答用リンクを取得</p>
+                    </div>
+
+                    <script>
+                        const MY_ANSWER_URL = "https://at-collect.net/res/<%= p.guid %>";
+                        $("#btn_getlink").click(()=>{
+                            copyToClip(MY_ANSWER_URL);
+                            window.alert("URLをコピーしました。貼り付けてご利用ください。");
+                            view.showShareMyUrlWd();
+                        });
+                    </script>
+                </div>
+
+                <div class="row c" style="margin-top:15px">
+                    <p class="g" style="width:calc(100% - 20px)"><b>過去の投稿</b></p>
+                </div>
+    
+            <%}else{%>
+                <% p.link = "/mypage/"+p.guid %>
+                <%- include("../cell/post_y.ejs",p) %>
+        <% } post_i++; } %>
+
+        <% if(post_i<=1){ %>
+                <p class="g row">投稿はありません</p>
         <% } %>
 
         

@@ -1,0 +1,50 @@
+<html>
+<head>
+    <%- include("../head.ejs") %>
+    <title>マイページ</title>
+</head>
+<body>
+    <%- include("../header.ejs",{title:"マイページ"})%>
+
+    <div class="bg_or" ></div>
+
+    <div class="top_area">
+        
+        <div class="row">
+            <div class="ibtn">
+                <p style="color:orange">＋ 投稿を作成</p>
+                <a href="/create" class="link" ></a>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top:6px">
+            <div class="post" >
+                <img src="/img/card_b.png" />
+                <div class="message" style="flex-direction: column;">
+                    <p>あなたの質問回答ページ</p> 
+                    <a class="b" href="/u/<%= user.id %>/" >https://at-collect.net/u/<%= user.id %>/</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="content pd">
+
+        <div class="row" style="margin:6px 0;">
+            <p style="color:gray">投稿一覧</p>
+        </div>
+
+        <% for(var p of posts){ %>
+            <% p.link = "/mypage/"+p.guid %>
+            <%- include("../cell/post_y.ejs",p) %>
+        <% } %>
+
+        
+        <a class="row xs" href="/signout" style="color:blue;margin-top:20px;">ログアウト</a>
+    </div>
+
+    <%- include("../footer.ejs")%>
+
+</body>
+</html>

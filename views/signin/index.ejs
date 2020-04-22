@@ -5,9 +5,12 @@
     <link rel="stylesheet" href="/style.css">
 </head>
 <body style="background-color: orange;">
-    <%- include("../header.ejs")%>
+    <%- include("../header_t.ejs")%>
 
     <div class="content fit">
+        <div class="row line" style="margin:10px 0">
+            <img src="/loading.gif" style="width:50px"/>
+        </div>  
         <div class="row line" style="margin:5px 0">
             <p class="w s">ログイン情報を確認しています。</p>
         </div>
@@ -25,17 +28,17 @@
             return location.href = "/"
         };
         if(location.hash){
-            ac.chkRedSignIn(async(r)=>{
+            ac.chkRedSignIn(async(r,name)=>{
                 if(!r){
                     $("#result_message").html("認証に失敗しました。");
                     setTimeout(()=>location.href="/",300);
                 }else{
-                    $("#result_message").html('ようこそ@Collectへ。もう間もなく準備が整います。');
-                    if(await signInSv(r)) return location.href = "/mypage";
+                    $("#result_message").html('ようこそ@Collectへ。もう間もなく準備が完了します。');
+                    if(await signInSv(r)) return location.href = "/mkuser?name="+encodeURI(name);
                     window.alart("不明なエラーが発生しました。");
                     location.href = "/";
                 }
-            });
+            },getParam("signin"));
         }
         else if(getParam("signin")) {
             switch(getParam("signin")){

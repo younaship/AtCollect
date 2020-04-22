@@ -1,4 +1,5 @@
 var ac = {};
+var view = {};
 
 var db = null;
 ac.fire_auth_state = null;
@@ -75,7 +76,7 @@ async function signInSv(data=null){
             url:'/login',
             type:'POST',
             data:{
-                csrtoken : "csrfToken",
+                uid : ac.uid || null,
                 idtoken : token,
                 data : data
             }
@@ -90,18 +91,26 @@ async function signInSv(data=null){
 
 }
 
-ac.chkRedSignIn = function(callback){
+/** callback({pushdata},"name")  */
+ac.chkRedSignIn = function(callback,type="none"){
 
     firebase.auth().getRedirectResult().then(function(result) {
         if (result.credential) {
             var token = result.credential.accessToken;
             var secret = result.credential.secret;
+
+            var name = result.user.displayName;
+            var uid = result.user.uid;
+
             if(callback) callback({
+                type : type,
                 token : token,
-                secret : secret
-            });
+                secret : secret,
+                name : name,
+                uid : uid,
+            },name);
         }
-        var user = result.user;
+
         }).catch(function(error) {
             var errorCode = error.code;
             var errorMessage = error.message;
@@ -118,6 +127,7 @@ ac.signInWithMail = async function(){
 
 ac.signInWithTw = async function(){
     var provider = new firebase.auth.TwitterAuthProvider();
+    firebase.auth().signInWithRedirect(provider);
 }
 
 ac.signInWithFace = async function(){
@@ -169,6 +179,27 @@ ac.sendAnswer = function(qid,reply){
     }) 
 }
 
+ac.sendCheckedQuestion = function(qids){
+    return new Promise((x)=>{
+        $.ajax({
+            url : '/myquestion',
+            type : 'POST',
+            data : {
+                qids : qids
+            }
+        })
+        .done( (data) => {
+            console.log("Ajax Success",data);
+            if(data.status == "success") x(true);
+            else x(false);
+        })
+        .fail( (data) => {
+            console.log("Ajax Err",data);
+            x(null)
+        });
+    }) 
+}
+
 ac.sendQusetionToMe = function(message){ 
     const uid = ac.uid;
     if(!uid) return;
@@ -190,6 +221,10 @@ ac.sendQusetionToMe = function(message){
             x(false);
         })
     });
+}
+
+view.showShareMyUrlWd = function(){
+    
 }
 
 
@@ -219,4 +254,13 @@ function isHarfEisu(str){
   }else{
     return false;
   }
+}
+
+function copyToClip(str){
+    let textarea = $('<textarea></textarea>');
+    textarea.text(str);
+    $("body").append(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    textarea.remove();
 }

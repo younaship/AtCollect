@@ -1,0 +1,24 @@
+<html>
+<head>
+    <%- include("../head.ejs") %>
+    <title>Wait for Signin</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body style="background-color: orange;">
+    <%- include("../header.ejs")%>
+
+    <div class="content fit">
+        <div class="row line" style="margin:5px 0">
+            <p class="w s">ログアウトしています。</p>
+        </div>
+    </div>
+
+    <script>
+        logout();
+        setTimeout(()=>{
+            location.href = "/";
+        },500)    
+    </script>
+
+</body>
+</html>

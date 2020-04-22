@@ -2,17 +2,18 @@
 <head>
     <%- include("../head.ejs") %>
     <title>My/Post</title>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+    <link rel="stylesheet" href="/inst_view.css">
 </head>
 <body>
     <%- include("../header.ejs",{title:"投稿を作成"})%>
-
-    <div class="bg_or" ></div>
+    <%- include("../inst_view.ejs")%>
 
     <form action="/create" method="POST">
 
-    <div class="top_area">
-        <div class="row">
-            <p class="w s">「～だけどどう思う？」など投稿して匿名メッセージを募集しよう！</p>
+    <div class="content">
+        <div class="row" style="margin: 15px 0;">
+            <p class="s g">「～だけどどう思う？」など投稿して匿名メッセージを募集しよう！</p>
         </div>
 
         <div class="post">
@@ -22,28 +23,17 @@
                     name="message" id="tx_post"></textarea>
             </div>
         </div>
-    </div>
-
-    <div class="content pd">
+    
         <div class="row">
             <input type="submit" class="ibtn send or" id="in_submit" value="投稿を作成"/>
         </div>
-        <div class="row s" style="margin:20px 0;">
-            <p>または</p>
-        </div>
-        <div class="row">
-            <input type="button" class="ibtn" value="質問を募集する" id="btn_mkq"/>
-        </div>
+
     </div>
-    
+
     </form>
 
-    <script>
-        $("#btn_mkq").click(()=>{
-            $("#tx_post").val("質問募集中！！");
-            $("#in_submit").click();
-        });
-    </script>
+    <%- include("../footer.ejs")%>
+
 
 </body>
 </html>

@@ -1,0 +1,44 @@
+<html>
+<head>
+    <%- include("../head.ejs") %>
+    <title>My/Post</title>
+</head>
+<body style="background-color: orange;">
+    
+    <header class="header">
+        <img src="/img/account_icon.png" id="account_icon" />
+    </header>
+
+
+    <div class="bg_or" ></div>
+
+    <div class="content fit">
+        <div class="row">
+            <p class="w l">投稿完了しました！</p>
+        </div>
+        <div class="post">
+            <img src="/img/card_y.png" />
+            <div class="message">
+                <p><%= message %></p>
+            </div>
+        </div>
+
+        <div class="row">
+            <p class="w">投稿をシェアしよう！</p>
+        </div>
+
+        <div class="row" style="margin: 10px 0;">
+            <div class="tools" style="margin: 0 10px;">
+                <img src="/img/ins_icon.png" class="icon" />
+                <img src="/img/tw_icon.png" class="icon tw" />
+            </div>
+        </div>
+
+        <div class="row">
+            <a href="/mypage/" class="ibtn"><p>完了</p></a>
+        </div>
+    </div>
+
+
+</body>
+</html>
