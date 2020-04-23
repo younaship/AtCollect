@@ -313,6 +313,8 @@ app.get('/signout', (req, res) => { // GET
     res.render("./signout/")
 });
 
+/* ------ */
+
 const sv = https.createServer( OPTIONS, app );
 
 sv.listen(443,()=>{
@@ -326,10 +328,6 @@ const sv2 = http.createServer(app2);
 sv2.listen(80,()=>{
     console.log("start echo on http.")
 });
-
-function checkSession(res){
-    
-}
 
 function _checkSessionInTime(timestamp){
     const LIFE_TIME = 60 * 60 * 1000; // (1h)

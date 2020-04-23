@@ -200,6 +200,7 @@ ac.sendCheckedQuestion = function(qids){
     }) 
 }
 
+
 ac.sendQusetionToMe = function(message){ 
     const uid = ac.uid;
     if(!uid) return;
