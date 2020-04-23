@@ -1,0 +1,11 @@
+.info_box{
+    margin: 10px;
+    width: 300px;
+    height: 240px;
+    background-color: white;
+    border-radius: 20px;
+}
+
+.login.tw{
+    background-color: #1EA1F3;
+}

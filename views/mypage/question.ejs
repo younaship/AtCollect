@@ -2,22 +2,46 @@
 <head>
     <%- include("../head.ejs") %>
     <title>マイページ</title>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+    <link rel="stylesheet" href="/inst_view.css">
 </head>
 <body>
     <%- include("../header.ejs",{title:"自分への質問"})%>
+    <%- include("../inst_view.ejs")%>
+    <%- include("../popup.ejs")%>
 
-    <div class="content">
+    <div class="content" style="padding-bottom:120px">
+        <div class="row" style="margin:10px 0">
+            <div class="ibtn btn" id="btn_getlink">
+                <img src="/img/clip.png" style="height:20px;margin-right: 10px" />
+                <p class="o">質問募集リンクを取得</p>
+            </div>
+
+            <script>
+
+                const IMAGE_TEMPLATE = `
+                    <img src="/img/q_temp.png" style="max-height:calc(100% - 100px);max-width:calc(100% - 100px);padding:50px;" />
+                `
+
+                const MY_ANSWER_URL = "https://at-collect.net/u/<%= user.id %>";
+                $("#btn_getlink").click(()=>{
+                    copyToClip(MY_ANSWER_URL);
+                    viewPopUp(IMAGE_TEMPLATE);
+                    setTimeout(()=>window.alert("URLをコピーしました。貼り付けてご利用ください。"),100);
+                });
+            </script>
+        </div>
 
         <div class="view_selecter">
             <p class="col nocheck active" type="nocheck">未回答</p>
             <p class="col checked" type="checked">回答済み</p>
         </div>
 
+        <p class="row" style="position:fixed;left:0px;bottom:70px;z-index:2;">
+            <input type="button" class="ibtn" value="まとめて回答する" onclick="instRenderAll('nocheck')" />
+        </p>
+
         <div class="view_aria" id="nocheck">
-                        
-            <% if(nocheck.length<=0){ %>            
-                <p class="row" style="color:gray;font-size:small;">質問はまだありません。「みんなの質問」に答えましょう！</p>
-            <% } %>
 
             <% for(var p of nocheck){ %>
 
@@ -28,27 +52,32 @@
                             <p><%= p.message %></p>
                         </div>
                     </div>
-                    <div class="post" style="bottom:0;">
-                        <img src="/img/card_y.png"/>
-                        <div class="message">
-                            <textarea class="in_text" style="margin-top:20px;" maxlength="50" 
-                                placeholder="返信を入力" name="message" id="<%= p.guid %>_tx"></textarea>
-                        </div>
-                        <input type="button" value="OK" class="btn rep_send" id="<%= p.guid %>_btn"/>
                     
-                        <script>
-                        
-                            $("#<%= p.guid %>_btn").click(async()=>{
-                                const guid = "<%= p.guid %>";
-                                const message = "<%= p.message %>";
-                                const reply = $(`#${guid}_tx`).val();
-                                if(!reply) return;
-                                moveToChecked($(`#${guid}`),message,reply);
-                                if(!await ac.sendAnswer(guid,reply)) window.alert("不明なエラーが発生しました。何度も同じエラーが出る場合、お問い合わせから報告ください。");
-                            })
+                    <script>
+                    
+                        $("#<%= p.guid %>_btn").click(async()=>{
+                            const guid = "<%= p.guid %>";
+                            const message = "<%= p.message %>";
+                            const reply = $(`#${guid}_tx`).val();
+                            if(!reply) return;
+                            moveToChecked($(`#${guid}`),message,reply);
+                            if(!await ac.sendAnswer(guid,reply)) window.alert("不明なエラーが発生しました。何度も同じエラーが出る場合、お問い合わせから報告ください。");
+                        })
 
-                        </script>
+                    </script>
 
+                </div>
+
+                <div class="tools">
+                <!--
+                    <div class="icon rem">
+                        <img src="/img/delete_icon.png" class="fill btn"/>
+                    </div>
+                -->
+                    <div class="icon ins">
+                        <img src="/img/ins_icon.png" class="fill btn" 
+                            onclick="$('#<%= p.guid %>').removeClass('open');
+                                viewInst($('#<%= p.guid %>').prop('outerHTML'),()=>instOnClickChecked(['<%= p.guid %>']));"/> <!--View Inst-->
                     </div>
                 </div>
 
@@ -75,7 +104,6 @@
                     $("#checked").prepend(TEMPLATE);
                     
                     $(".post_with .sw").click(function(){
-                        console.log("psuh")
                         $(this).parent().hasClass("open") ? $(this).parent().removeClass("open") : $(this).parent().addClass("open");
                     })
 
@@ -83,18 +111,27 @@
                         jObj.remove();
                     },500);
                 }
+
+                function instRenderAll(target){ // target "nocheck" or "checked"
+                    if($("#"+target+" .post_with").length<=0) return window.alert("質問がまだありません。「みんなの質問」から回答しましょう！");
+                    var html = "";
+                    var qids = [];
+                    for(const obj of $("#"+target+" .post_with")){
+                        const guid = $(obj).attr("id");
+                        qids.push(guid);
+                        $(obj).removeClass('open');
+                        html += $(obj).prop('outerHTML');
+                    }
+                    viewInst(html,()=>instOnClickChecked(qids));
+                }
+
             </script>
         </div>
 
         <div class="view_aria none" id="checked">
-
-            <% if(checked.length<=0){ %>            
-                <p class="row" style="color:gray;font-size:small;">回答した質問はありません</p>
-            <% } %>
-
             <% for(var p of checked){ %>
 
-                <div class="post_with open">
+                <div class="post_with">
                     <div class="post sw" style="top:0;z-index: 1;">
                         <img src="/img/card_b.png" />
                         <div class="message">
@@ -112,7 +149,14 @@
             <% } %>
         </div>
 
+    </div>
+    
     <script>
+        function instOnClickChecked(qids){
+            ac.sendCheckedQuestion(qids);
+            location.href="/myquestion";
+        }
+
         $(".view_selecter p").click(function(){
             const id = $(this).attr("type");
             $(".view_selecter p").removeClass("active");
@@ -126,13 +170,12 @@
                 $("#nocheck").removeClass("none");
             }
         });
-
+    /*
         $(".post_with .sw").click(function(){
             $(this).parent().hasClass("open") ? $(this).parent().removeClass("open") : $(this).parent().addClass("open");
         })
+    */
     </script>
-
-    </div>
 
     <%- include("../footer.ejs")%>
 

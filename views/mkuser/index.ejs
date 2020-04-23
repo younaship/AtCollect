@@ -12,16 +12,16 @@
             <p class="w xl">初回登録</p>
         </div>
         <div class="row" style="margin:5px 0">
-            <p class="w">@Collectで使用するIDを入力してください。</p>
+            <p class="w">@Collectで使用する名前を入力してください。</p>
         </div>
 
         <div class="row" style="margin:5px 0">
-            <input type="text" class="l" id="in_id" placeholder="idを入力してください" style="padding:5px"/>
+            <input type="text" class="l" id="in_name" maxlength="9" placeholder="名前を入力" style="padding:5px"/>
         </div>
 
         
         <div class="row" style="margin:5px 0">
-            <p class="s" style="color:gray">3-12文字の英数字のみで入力してください。</p>
+            <p class="s" style="color:gray">9文字以内で入力してください。</p>
         </div>
 
         <div class="row" style="margin:30px 0">
@@ -31,28 +31,30 @@
 
     <script>
 
+        $("#in_name").val(getParam("name"));
+
         $("#btn_ok").click(async()=>{
-            const val = $("#in_id").val();
-            if((3 > String(val).length)||(12<String(val).length)) return window.alert("入力されたIDの文字数が正しくありません");
-            if(!isHarfEisu(String(val))) return window.alert("入力された文字が正しくありません。");
-            var ans = await window.confirm(`IDは[${val}]でよろしいでしょうか？`,"OK","Cansel");
+            const val = $("#in_name").val();
+            if(0 > String(val).length) return window.alert("文字が入力されていません。");
+            if(9 < String(val).length) return window.alert("入力されたIDの文字数が正しくありません");
+
+            var ans = await window.confirm(`名前は"${val}"でよろしいでしょうか？`,"OK","Cansel");
             if(!ans) return;
 
             var result = await mkId(val);
-            console.log(result);
 
             if(!result) window.alert("不明なエラーが発生しました。");
             else if(result.status=="success") location.href = "/mypage/";
             else window.alert(`エラー\n${result.message}`);
         })
 
-        function mkId(id){
+        function mkId(name){
             return new Promise((x)=>{
                 $.ajax({
                     url : '/mkuser/',
                     type : 'POST',
                     data : {
-                        id : id
+                        name : name
                     }
                 })
                 .done( (data) => {

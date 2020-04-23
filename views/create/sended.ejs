@@ -1,13 +1,13 @@
 <html>
 <head>
     <%- include("../head.ejs") %>
-    <title>My/Post</title>
+    <title>投稿が完了しました！</title>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+    <link rel="stylesheet" href="/inst_view.css">
 </head>
 <body style="background-color: orange;">
-    
-    <header class="header">
-        <img src="/img/account_icon.png" id="account_icon" />
-    </header>
+    <%- include("../header.ejs",{title:"投稿完了"})%>
+    <%- include("../inst_view.ejs")%>
 
 
     <div class="bg_or" ></div>
@@ -16,7 +16,7 @@
         <div class="row">
             <p class="w l">投稿完了しました！</p>
         </div>
-        <div class="post">
+        <div class="post" id="post">
             <img src="/img/card_y.png" />
             <div class="message">
                 <p><%= message %></p>
@@ -29,12 +29,13 @@
 
         <div class="row" style="margin: 10px 0;">
             <div class="tools" style="margin: 0 10px;">
-                <img src="/img/ins_icon.png" class="icon" />
-                <img src="/img/tw_icon.png" class="icon tw" />
+                <img src="/img/ins_icon.png" class="icon"  
+                    onclick="viewInst($('#post').prop('outerHTML'));"/>
+                <!--<img src="/img/tw_icon.png" class="icon tw" />-->
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" style="margin:15px 0;">
             <a href="/mypage/" class="ibtn"><p>完了</p></a>
         </div>
     </div>

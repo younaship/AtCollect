@@ -1,13 +1,13 @@
 <% var title,style; %>
-
 <% if(style){ %>
-<header class="header" style="<%= style %>">
-<% }else{ %>
+<header class="header" style="<%=style%>" >
+<%}else{%>
 <header class="header">
-<% } %>
+<%}%>
     <% if(title){ %>
     <p class="title"><%=  title %></p>
     <% } %>
     
     <img src="/img/account_icon.png" id="account_icon" class="btn" onclick="location.href = '/mypage'"/>
+    <img src="/img/at-collect_logo.png" id="logo" />
 </header>

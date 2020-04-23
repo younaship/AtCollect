@@ -17,7 +17,7 @@ p{
     margin: 0;
 }
 
-input[type="button"],input[type="text"]{
+input[type="button"],input[type="text"],input[type="submit"]{
     border: none;
     box-shadow: 1px 1px 5px 1px gray;
     -webkit-appearance: none;
@@ -38,6 +38,7 @@ input:active{
     width: 100%;
     height: 60px;
     z-index: 5;
+    background-color: orange;
     /*box-shadow: 1px 1px 5px 1px gray;*/
 }
 
@@ -68,6 +69,14 @@ input:active{
     margin: 14px;
 }
 
+#logo{
+    position: absolute;
+    top : 0;
+    left: 0;
+    height: 32px;
+    margin: 14px;
+}
+
 .bg_or{
     position: absolute;
     top: 0;
@@ -91,14 +100,24 @@ input:active{
 
 .content{
     position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     left: 0;
-    top: 170px;
+    top: 60px;
     width: 100%;
     padding-bottom: 60px;
+
+}
+
+.content.mpd{
+    top : 160px;
 }
 
 .content.pd{
-    top: 270px;
+    top: 280px;
+
 }
 
 .content.fit{
@@ -111,7 +130,34 @@ input:active{
     width: 100%;
 }
 
+.footer{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    background-color: orange;
+    z-index: 5;
+}
+
+.footer .tab{
+    flex: 1;
+    text-align: center;
+}
+
+.footer .icon{
+    width: 32px;
+    height: 32px;
+}
+
 /* CSS Anim */
+
+.none{
+    display: none;
+}
 
 .trans{
     opacity: 0;
@@ -121,6 +167,10 @@ input:active{
 .fill{
     height: 100%;
     width: 100%;
+}
+
+.ab{
+    position: absolute;
 }
 
 a.link{
@@ -139,12 +189,16 @@ a.link{
     color: white;
 }
 
+.o{
+    color: orange;
+}
+
 .b{
     color: rgb(30,100,255);
 }
 
-.or{
-    color: orange;
+.g{
+    color: gray;
 }
 
 .btn:active{
@@ -176,9 +230,19 @@ a.link{
 /* Cell */
 
 .row{
+    position: relative;
     display: flex;
     width: 100%;
     justify-content: center;
+}
+
+.row.c{
+    flex-direction: column;
+    align-items: center;
+}
+
+.row.inline{
+    display: inline;
 }
 
 .row.line{
@@ -201,6 +265,13 @@ a.link{
     box-shadow: 1px 1px 5px 1px gray;
 }
 
+.mbtn{
+    width: 100px;
+    height: 30px;
+    background-color: rgb(30,100,255);
+    color: white;
+}
+
 .ibtn:active{
     opacity: .9;
 }
@@ -208,13 +279,6 @@ a.link{
 .item{
     width: 100%;
     background-color: white;
-}
-
-.item .tools{
-    display: flex;
-    margin: 5px 20px;
-    width: calc(100% - 40px);
-    justify-content: start;
 }
 
 .tools .icon{
@@ -227,9 +291,10 @@ a.link{
 
 .post{
     position: relative;
-    height: 160px;
+    height: 140px;
     width: 400px;
     margin: 10px;
+    transition: opacity .5s;
 }
 
 .post .message{
@@ -276,13 +341,13 @@ a.link{
 
 .post_with{
     position: relative;
-    height: 180px;
+    height: 160px;
     width: 420px;
     transition: all .5s;
 }
 
 .post_with.open{
-    height: 280px;
+    height: 260px;
 }
 
 .post_with .post{
@@ -298,6 +363,12 @@ a.link{
     padding : 10px;
     background-color: white;
     font-size: large;
+}
+
+.tools{
+    display: flex;
+    justify-content: start;
+    padding : 0 5px;
 }
 
 /* root */

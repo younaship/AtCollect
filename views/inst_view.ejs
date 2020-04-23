@@ -1,0 +1,97 @@
+<div id="inst_view" class="none">
+    <img src="/img/cross.png" id="inst_close" class="btn"
+        style="position:absolute;top:0px;right:0px;margin:10px;height:28px;" />
+
+    <img src="/img/dl.png" id="inst_dl" class="btn"
+        style="position:absolute;top:42px;right:0px;margin:8px;height:32px;" />
+
+
+    <div class="view" >
+        <div class="fill ab" id="inst_view_in" ></div>
+        <div class="fill ab" id="inst_img_view"></div>
+    </div>
+    
+    <div class="row" style="position:fixed;z-index:6;bottom:20px;left:0;right :0">
+        <input type="button" class="ibtn" value="回答済みにする" id="checked_btn"/>
+    </div>
+    
+
+    <div id="canvas_tmp_box" style="positon;fixed;display:none"></div>
+</div>
+
+<script>
+
+    function initInstView(html){ return `
+        <div class="fill ab"
+            style="display:flex;justify-content: center;align-items: center;
+                background-color: rgb(30,100,255); flex-direction: column;">
+
+            <img src="/img/inst_here.png" class="ab" 
+                style="top:0;left:0;margin:30px;width:50px">
+
+            <p class="w xs">匿名メッセージ共有サービス</p>
+            <p class="w s" style="padding-bottom:30px">@Collect</p>
+            ${html}
+        </div>
+    `}
+
+    const TMP_LOADING_INST = `           
+        <p style="padding:8px;background:rgba(0,0,0,.8);color:white;font-size:small;
+                text-align:center;"><b>画像準備中です</b><br>しばらくお待ちください</p>
+        `
+
+    function viewInst(html,onclick){
+        $("#inst_img_view").html(TMP_LOADING_INST);
+        $("#inst_img_view").find(".norender").remove(); // NoRender Obj
+        $("#canvas_tmp_box").html(""); //clean
+        $("#inst_view").removeClass("none");
+        $("#inst_view_in").removeClass("none");
+        $("#inst_view_in").html(initInstView(html));
+        const js = $("#inst_view_in").find("*");
+        js.addClass("onvs");
+
+        const y = window.pageYOffset ;
+        window.scrollTo(0,0);  
+        html2canvas(document.querySelector("#inst_view_in")).then(canvas => {
+            canvas.id = "canvas_tmp";
+            document.querySelector("#canvas_tmp_box").appendChild(canvas);
+            $("#inst_view_in").addClass("none");
+            $("#inst_img_view").html(getAsImageCanvas("canvas_tmp")); // Ready
+            //$("#inst_dl").removeClass("none");
+            window.scrollTo(0,y); 
+        });
+
+        if(!onclick) $("#checked_btn").addClass("none"); 
+        else $("#checked_btn").click(()=>{
+            //saveAsImageCanvas("canvas_tmp");
+            onclick();
+            onclick = null;
+            
+        })
+    }
+
+    function saveAsImageCanvas(id){ // nouse
+        let canvas = document.getElementById(id)
+        let link = document.createElement('a')
+        link.href = canvas.toDataURL("image/jpeg", 0.75 );
+        link.download = 'canvas.png'
+        link.click()
+    }
+
+    function getAsImageCanvas(id){
+        let canvas = document.getElementById(id)
+        let img = document.createElement('img')
+        img.src = canvas.toDataURL();
+        img.style = "max-height:100%;max-width:100%;"
+        return img;
+    }
+
+    $("#inst_close").click(()=>{
+        $("#inst_view").addClass("none");
+    });
+
+    $("#inst_dl").click(()=>{
+        saveAsImageCanvas("canvas_tmp");
+    });
+
+</script>

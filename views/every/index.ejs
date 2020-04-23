@@ -18,11 +18,16 @@
                         <div class="message">
                             <p><%= p.message %></p>
                         </div>
-                    </div>
+                    </div>                  
+                </div>
+
+                <div class="row" style="justify-content: flex-right;">
+                    <input type="button" class="btn mbtn" value="回答する"/>  
+                </div>
 
                     <script>
                     
-                        $("#<%= p.guid %>").click(async function(){
+                        $("#<%= p.guid %>_go").click(async function(){
                             console.log("clciked")
                             const message = "<%= p.message %>";
                             const jObj = $(this).addClass("trans");
@@ -34,9 +39,6 @@
                         })
 
                     </script>
-
-                    
-                </div>
 
             <% } %>
         </div>

@@ -218,11 +218,12 @@ exports.createPost = function(uid,message){
 }
 
 /**ユーザーを作成、IDを返します。 */
-exports.createUser = function(uid,id){
+exports.createUser = function(uid,id,name){
   return new Promise(async(x)=>{
     var ref = await db.collection("/users").add({
       uid : uid,
       id : id,
+      name : name,
       time : admin.firestore.FieldValue.serverTimestamp(),
     }).catch((e)=>console.error(e));
     x(ref.id);
@@ -240,6 +241,14 @@ exports.chackSession = function(sessionCookie){
         x(null);
       }
     );
+  })
+}
+
+exports.setAuthData = function(data){
+  if(!data) return;
+  return new Promise(async (x)=>{
+    var ref = await db.collection("/auth").add(data).catch((e)=>console.error(e));
+    x(ref.id);
   })
 }
 
