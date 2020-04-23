@@ -210,11 +210,12 @@ a.link{
 }
 
 .s{
-    font-size: small;
+    font-size: 30px;
+    font-weight: 600;
 }
 
 .l{
-    font-size: x-large;
+    font-size: 1.3rem;
 }
 
 .xl{
@@ -257,7 +258,7 @@ a.link{
     justify-content: center;
     align-items: center;
     background-color: white;
-    border-radius: 16px;
+    border-radius: 10px;
     width: 360px;
     height: 45px;
     font-size: large;
