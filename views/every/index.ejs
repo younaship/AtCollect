@@ -9,30 +9,28 @@
     <div class="content">
 
         <div class="view_aria" id="every">
-
+            <div class="row">
+                <p class="g s">最新の投稿</p>
+            </div>
+            
             <% for(var p of posts){ %>
 
-                <div class="post_with" id="<%= p.guid %>">
+                <div class="row c" id="<%= p.guid %>" style="transition: all .5s">
                     <div class="post" style="top:0;z-index: 1;">
                         <img src="/img/card_b.png" />
                         <div class="message">
                             <p><%= p.message %></p>
                         </div>
-                    </div>                  
-                </div>
-
-                <div class="row" style="justify-content: flex-right;">
-                    <input type="button" class="btn mbtn" value="回答する"/>  
+                    </div>
+                    <input type="button" class="btn mbtn" value="回答する" id="<%= p.guid %>_go" />                    
                 </div>
 
                     <script>
                     
                         $("#<%= p.guid %>_go").click(async function(){
-                            console.log("clciked")
                             const message = "<%= p.message %>";
-                            const jObj = $(this).addClass("trans");
+                            const jObj = $("#<%= p.guid %>").addClass("trans");
                             const res = await ac.sendQusetionToMe(message);
-                            console.log("RESULT",res)
                             setTimeout(()=>{
                                 jObj.remove();
                             },500);

@@ -116,11 +116,13 @@
                     if($("#"+target+" .post_with").length<=0) return window.alert("質問がまだありません。「みんなの質問」から回答しましょう！");
                     var html = "";
                     var qids = [];
+                    var count = 5;
                     for(const obj of $("#"+target+" .post_with")){
                         const guid = $(obj).attr("id");
                         qids.push(guid);
                         $(obj).removeClass('open');
                         html += $(obj).prop('outerHTML');
+                        count--;
                     }
                     viewInst(html,()=>instOnClickChecked(qids));
                 }

@@ -158,6 +158,27 @@ ac.sendReply = function(resid,reply){
     }) 
 }
 
+ac.sendCheckedReply = function(pids){
+    return new Promise((x)=>{
+        $.ajax({
+            url : '/rep',
+            type : 'POST',
+            data : {
+                pids : pids
+            }
+        })
+        .done( (data) => {
+            console.log("Ajax Success",data);
+            if(data.status == "success") x(true);
+            else x(false);
+        })
+        .fail( (data) => {
+            console.log("Ajax Err",data);
+            x(null)
+        });
+    }) 
+}
+
 ac.sendAnswer = function(qid,reply){
     return new Promise((x)=>{
         $.ajax({
@@ -199,7 +220,6 @@ ac.sendCheckedQuestion = function(qids){
         });
     }) 
 }
-
 
 ac.sendQusetionToMe = function(message){ 
     const uid = ac.uid;
