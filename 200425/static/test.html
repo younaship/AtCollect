@@ -1,0 +1,63 @@
+<html>
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=420,user-scalable=no">
+    <!--<script src="/jquery-3.4.1.min.js"></script>-->
+    <script
+      src="https://code.jquery.com/jquery-3.5.0.min.js"
+      integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
+      crossorigin="anonymous">
+    </script>
+    
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase.js"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-firestore.js"></script>
+    
+    <script src="/acollect.js"></script>
+    <script>initFire()</script>
+    
+    <link rel="stylesheet" href="/index.css">
+
+    <title>My/Post</title>
+</head>
+<body style="background-color: orange;">
+    
+    
+    <header class="header">
+        <img src="/img/account_icon.png" id="account_icon" class="btn"/>
+    </header>
+
+
+    <div class="top_area">
+        <div class="row">
+            <p class="title">新規投稿</p>
+        </div>
+
+        <div class="post_with">
+            <div class="post" style="top:0;z-index: 1;">
+                <img src="/img/card_b.png" />
+                <div class="message">
+                    <p>A</p>
+                </div>
+            </div>
+            <div class="post" style="bottom:0;">
+                <img src="/img/card_y.png"/>
+                <div class="message">
+                    <p>B</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content pd">
+        <div class="post">
+            <input type="submit" class="send or" value="作成する"/>
+        </div>
+    </div>
+
+
+</body>
+</html>

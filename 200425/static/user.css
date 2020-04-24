@@ -1,0 +1,13 @@
+.post.mini{
+    width: 300px;
+    height: 110px;
+}
+
+.post.mini p{
+    font-size: x-small;
+}
+
+.ibtn.send{
+    background-color: rgb(30,100,255);
+    color: white;
+}

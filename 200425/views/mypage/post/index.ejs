@@ -1,45 +1,31 @@
 <html>
 <head>
-    <%- include("../head.ejs") %>
-    <title>マイページ</title>
+    <%- include("../../head.ejs") %>
+    <title>My/Post</title>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
     <link rel="stylesheet" href="/inst_view.css">
 </head>
 <body>
-    <%- include("../header.ejs",{title:"自分への質問"})%>
-    <%- include("../inst_view.ejs")%>
-    <%- include("../popup.ejs")%>
+    <%- include("../../header.ejs",{title:"投稿の返信一覧"})%>
+    <%- include("../../inst_view.ejs")%>
 
-    <div class="content" style="padding-bottom:120px">
-        <div class="row" style="margin:10px 0">
-            <div class="ibtn btn" id="btn_getlink">
-                <img src="/img/clip.png" style="height:20px;margin-right: 10px" />
-                <p class="o">質問募集リンクを取得</p>
+    <div class="bg_or" ></div>
+
+    <div class="top_area pd">
+        <div class="post">
+            <img src="/img/card_y.png" />
+            <div class="message">
+                <p><%- post.message %></p>
             </div>
-
-            <script>
-
-                const IMAGE_TEMPLATE = `
-                    <img src="/img/q_temp.png" style="max-height:calc(100% - 100px);max-width:calc(100% - 100px);padding:50px;" />
-                `
-
-                const MY_ANSWER_URL = "https://at-collect.net/u/<%= user.id %>";
-                $("#btn_getlink").click(()=>{
-                    copyToClip(MY_ANSWER_URL);
-                    viewPopUp(IMAGE_TEMPLATE);
-                    setTimeout(()=>window.alert("回答用URLをコピーしました。画像をスクリーンショットまたは保存してSNSでシェアをしよう！"),100);
-                });
-            </script>
         </div>
+    </div>
+
+    <div class="content pd">
 
         <div class="view_selecter">
             <p class="col nocheck active" type="nocheck">未回答</p>
             <p class="col checked" type="checked">回答済み</p>
         </div>
-
-        <p class="row" style="position:fixed;left:0px;bottom:70px;z-index:2;">
-            <input type="button" class="ibtn" value="まとめて回答する" onclick="instRenderAll('nocheck')" />
-        </p>
 
         <div class="view_aria" id="nocheck">
 
@@ -52,7 +38,16 @@
                             <p><%= p.message %></p>
                         </div>
                     </div>
-                    
+                    <!--
+                    <div class="post" style="bottom:0;">
+                        <img src="/img/card_y.png"/>
+                        <div class="message">
+                            <textarea class="in_text" style="margin-top:20px;" maxlength="50" 
+                                placeholder="返信を入力" name="message" id="<%= p.guid %>_tx"></textarea>
+                        </div>
+                        <input type="button" value="OK" class="btn rep_send" id="<%= p.guid %>_btn"/>
+                    </div>
+                    -->
                     <script>
                     
                         $("#<%= p.guid %>_btn").click(async()=>{
@@ -82,7 +77,13 @@
                 </div>
 
             <% } %>
-            <script>            
+            <script>       
+
+                function instOnClickChecked(qids){
+                    ac.sendCheckedReply(qids);
+                    location.href="/mypage";
+                }
+
                 function moveToChecked(jObj,message,reply){
                     const TEMPLATE = `
                     <div class="post_with open">
@@ -116,10 +117,7 @@
                     if($("#"+target+" .post_with").length<=0) return window.alert("質問がまだありません。「みんなの質問」から回答しましょう！");
                     var html = "";
                     var qids = [];
-                    var count = 5;
                     for(const obj of $("#"+target+" .post_with")){
-                        count--;
-                        if(count<0) continue;
                         const guid = $(obj).attr("id");
                         qids.push(guid);
                         $(obj).removeClass('open');
@@ -127,6 +125,7 @@
                     }
                     viewInst(html,()=>instOnClickChecked(qids));
                 }
+
 
             </script>
         </div>
@@ -153,13 +152,8 @@
         </div>
 
     </div>
-    
-    <script>
-        function instOnClickChecked(qids){
-            ac.sendCheckedQuestion(qids);
-            location.href="/myquestion";
-        }
 
+    <script>
         $(".view_selecter p").click(function(){
             const id = $(this).attr("type");
             $(".view_selecter p").removeClass("active");
@@ -173,14 +167,13 @@
                 $("#nocheck").removeClass("none");
             }
         });
-    /*
+
         $(".post_with .sw").click(function(){
             $(this).parent().hasClass("open") ? $(this).parent().removeClass("open") : $(this).parent().addClass("open");
         })
-    */
     </script>
 
-    <%- include("../footer.ejs")%>
+    <%- include("../../footer.ejs")%>
 
 </body>
 </html>

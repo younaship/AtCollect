@@ -1,0 +1,49 @@
+<html>
+<head>
+    <%- include("../head.ejs") %>
+    <title>Res</title>
+</head>
+<body>
+    <%- include("../header.ejs",{style:"background-color: rgb(30,100,255)"})%>
+
+    <div class="bg_bl" ></div>
+
+    <div class="top_area">
+
+        <div class="row">
+            <p class="w s">「<%= user.name %>」さんの投稿</p>
+        </div>
+        <div class="row">
+            <div class="post">
+                <img src="/img/card_y.png" />
+                <div class="message">
+                    <p><%- post.message %></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form action="/res/<%- post.guid %>" method="POST">
+    <div class="content pd">
+
+        <div class="row s">
+            <p>匿名でメッセージを送信できます！</p>
+        </div>
+
+        <div class="post">
+            <img src="/img/card_b.png" />
+            <div class="message">
+                <textarea class="in_text" maxlength="128" placeholder="メッセージを入力" name="message"></textarea>
+            </div>
+        </div>
+        
+        <div class="row" style="margin:10px 0">
+            <input type="submit" class="ibtn send" value="送信"/>
+        </div>
+
+        <p style="margin:10px;color:gray;" class="xs">※ただし、誹謗中傷などを送信した場合ブロック・その他対処を行うこともあります。詳しくは利用規約をお読みください。</p>
+    </div>
+    </form>
+
+</body>
+</html>
