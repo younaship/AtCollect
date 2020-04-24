@@ -1,0 +1,179 @@
+<html>
+<head>
+    <%- include("../../head.ejs") %>
+    <title>My/Post</title>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+    <link rel="stylesheet" href="/inst_view.css">
+</head>
+<body>
+    <%- include("../../header.ejs",{title:"投稿の返信一覧"})%>
+    <%- include("../../inst_view.ejs")%>
+
+    <div class="bg_or" ></div>
+
+    <div class="top_area pd">
+        <div class="post">
+            <img src="/img/card_y.png" />
+            <div class="message">
+                <p><%- post.message %></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="content pd">
+
+        <div class="view_selecter">
+            <p class="col nocheck active" type="nocheck">未回答</p>
+            <p class="col checked" type="checked">回答済み</p>
+        </div>
+
+        <div class="view_aria" id="nocheck">
+
+            <% for(var p of nocheck){ %>
+
+                <div class="post_with" id="<%= p.guid %>">
+                    <div class="post sw" style="top:0;z-index: 1;">
+                        <img src="/img/card_b.png" />
+                        <div class="message">
+                            <p><%= p.message %></p>
+                        </div>
+                    </div>
+                    <!--
+                    <div class="post" style="bottom:0;">
+                        <img src="/img/card_y.png"/>
+                        <div class="message">
+                            <textarea class="in_text" style="margin-top:20px;" maxlength="50" 
+                                placeholder="返信を入力" name="message" id="<%= p.guid %>_tx"></textarea>
+                        </div>
+                        <input type="button" value="OK" class="btn rep_send" id="<%= p.guid %>_btn"/>
+                    </div>
+                    -->
+                    <script>
+                    
+                        $("#<%= p.guid %>_btn").click(async()=>{
+                            const guid = "<%= p.guid %>";
+                            const message = "<%= p.message %>";
+                            const reply = $(`#${guid}_tx`).val();
+                            if(!reply) return;
+                            moveToChecked($(`#${guid}`),message,reply);
+                            if(!await ac.sendAnswer(guid,reply)) window.alert("不明なエラーが発生しました。何度も同じエラーが出る場合、お問い合わせから報告ください。");
+                        })
+
+                    </script>
+
+                </div>
+
+                <div class="tools">
+                <!--
+                    <div class="icon rem">
+                        <img src="/img/delete_icon.png" class="fill btn"/>
+                    </div>
+                -->
+                    <div class="icon ins">
+                        <img src="/img/ins_icon.png" class="fill btn" 
+                            onclick="$('#<%= p.guid %>').removeClass('open');
+                                viewInst($('#<%= p.guid %>').prop('outerHTML'),()=>instOnClickChecked(['<%= p.guid %>']));"/> <!--View Inst-->
+                    </div>
+                </div>
+
+            <% } %>
+            <script>       
+
+                function instOnClickChecked(qids){
+                    ac.sendCheckedReply(qids);
+                    location.href="/mypage";
+                }
+
+                function moveToChecked(jObj,message,reply){
+                    const TEMPLATE = `
+                    <div class="post_with open">
+                        <div class="post sw" style="top:0;z-index: 1;">
+                            <img src="/img/card_b.png" />
+                            <div class="message">
+                                <p>${message}</p>
+                            </div>
+                        </div>
+                        <div class="post" style="bottom:0;">
+                            <img src="/img/card_y.png"/>
+                            <div class="message">
+                                <p style="margin-top:20px">${reply}</p>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                    jObj.addClass("trans");
+                    $("#checked").prepend(TEMPLATE);
+                    
+                    $(".post_with .sw").click(function(){
+                        $(this).parent().hasClass("open") ? $(this).parent().removeClass("open") : $(this).parent().addClass("open");
+                    })
+
+                    setTimeout(()=>{
+                        jObj.remove();
+                    },500);
+                }
+
+                function instRenderAll(target){ // target "nocheck" or "checked"
+                    if($("#"+target+" .post_with").length<=0) return window.alert("質問がまだありません。「みんなの質問」から回答しましょう！");
+                    var html = "";
+                    var qids = [];
+                    for(const obj of $("#"+target+" .post_with")){
+                        const guid = $(obj).attr("id");
+                        qids.push(guid);
+                        $(obj).removeClass('open');
+                        html += $(obj).prop('outerHTML');
+                    }
+                    viewInst(html,()=>instOnClickChecked(qids));
+                }
+
+
+            </script>
+        </div>
+
+        <div class="view_aria none" id="checked">
+            <% for(var p of checked){ %>
+
+                <div class="post_with">
+                    <div class="post sw" style="top:0;z-index: 1;">
+                        <img src="/img/card_b.png" />
+                        <div class="message">
+                            <p><%= p.message %></p>
+                        </div>
+                    </div>
+                    <div class="post" style="bottom:0;">
+                        <img src="/img/card_y.png"/>
+                        <div class="message">
+                            <p style="margin-top:20px"><%= p.reply %></p>
+                        </div>
+                    </div>
+                </div>
+                
+            <% } %>
+        </div>
+
+    </div>
+
+    <script>
+        $(".view_selecter p").click(function(){
+            const id = $(this).attr("type");
+            $(".view_selecter p").removeClass("active");
+            $(".view_selecter ."+id).addClass("active");
+
+            if(id=="checked"){
+                $("#checked").removeClass("none");
+                $("#nocheck").addClass("none");
+            }else{
+                $("#checked").addClass("none");
+                $("#nocheck").removeClass("none");
+            }
+        });
+
+        $(".post_with .sw").click(function(){
+            $(this).parent().hasClass("open") ? $(this).parent().removeClass("open") : $(this).parent().addClass("open");
+        })
+    </script>
+
+    <%- include("../../footer.ejs")%>
+
+</body>
+</html>

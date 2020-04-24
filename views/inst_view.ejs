@@ -50,16 +50,18 @@
         const js = $("#inst_view_in").find("*");
         js.addClass("onvs");
 
-        const y = window.pageYOffset ;
-        window.scrollTo(0,0);  
-        html2canvas(document.querySelector("#inst_view_in")).then(canvas => {
-            canvas.id = "canvas_tmp";
-            document.querySelector("#canvas_tmp_box").appendChild(canvas);
-            $("#inst_view_in").addClass("none");
-            $("#inst_img_view").html(getAsImageCanvas("canvas_tmp")); // Ready
-            //$("#inst_dl").removeClass("none");
-            window.scrollTo(0,y); 
-        });
+        setTimeout(()=>{ // Render
+            const y = window.pageYOffset ;
+            window.scrollTo(0,0);  
+            html2canvas(document.querySelector("#inst_view_in")).then(canvas => {
+                canvas.id = "canvas_tmp";
+                document.querySelector("#canvas_tmp_box").appendChild(canvas);
+                $("#inst_view_in").addClass("none");
+                $("#inst_img_view").html(getAsImageCanvas("canvas_tmp")); // Ready
+                //$("#inst_dl").removeClass("none");
+                window.scrollTo(0,y); 
+            });   
+        },100);
 
         if(!onclick) $("#checked_btn").addClass("none"); 
         else $("#checked_btn").click(()=>{

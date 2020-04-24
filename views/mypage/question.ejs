@@ -29,7 +29,7 @@
                 $("#btn_getlink").click(()=>{
                     copyToClip(MY_ANSWER_URL);
                     viewPopUp(IMAGE_TEMPLATE);
-                    setTimeout(()=>window.alert("URLをコピーしました。貼り付けてご利用ください。"),100);
+                    setTimeout(()=>window.alert("回答用URLをコピーしました。画像をスクリーンショットまたは保存してSNSでシェアをしよう！"),100);
                 });
             </script>
         </div>
@@ -120,7 +120,10 @@
                     if($("#"+target+" .post_with").length<=0) return window.alert("質問がまだありません。「みんなの質問」から回答しましょう！");
                     var html = "";
                     var qids = [];
+                    var count = 5;
                     for(const obj of $("#"+target+" .post_with")){
+                        count--;
+                        if(count<0) continue;
                         const guid = $(obj).attr("id");
                         qids.push(guid);
                         $(obj).removeClass('open');

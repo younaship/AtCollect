@@ -1,0 +1,44 @@
+<html>
+<head>
+    <%- include("../head.ejs") %>
+    <title>「<%= user.name %>」さんに匿名メッセージを送ろう</title>
+    <link rel="stylesheet" href="/user.css">
+</head>
+<body>
+    <%- include("../header.ejs",{style:"background-color: rgb(30,100,255);"})%>
+
+<% if(post){ %>
+        <a href="/res/<%=post.guid%>" class="link">「<%= user.name %>」さんの最新の投稿にメッセージを送ることも出来ます。</a>
+<% } %>
+
+    <form action="/q/<%= user.uid %>" method="POST">
+    <div class="content fit">
+
+        <div class="row" style="margin:10px">
+            <p class="b"><b>「<%= user.name %>」さんは質問を受付中です</b></p>
+        </div> 
+
+        <div class="post">
+            <img src="/img/card_b.png" />
+            <div class="message">
+                <textarea class="in_text" maxlength="128" placeholder="匿名で質問する" name="message"></textarea>
+            </div>
+        </div>
+        
+        <div class="row" style="margin-top:10px">
+            <input type="checkbox" id="chk_pri" value="on" name="pri" /><label for="chk_pri" class="s g">非公開メッセージとして送信</label>
+        </div>
+        <div class="row" style="margin-bottom:10px">
+            <p class="xs g">チェックボックスを入れると「みんなの投稿」に出てこなくなります。</p>
+        </div>       
+
+        <div class="row" style="margin:10px 0">
+            <input type="submit" class="ibtn send" value="送信"/>
+        </div>
+
+        <p style="margin:10px;color:gray;" class="xs">※ただし、誹謗中傷などを送信した場合ブロック・その他対処を行うこともあります。詳しくは利用規約をお読みください。</p>
+    </div>
+    </form>
+
+</body>
+</html>

@@ -1,6 +1,10 @@
 var ac = {};
 var view = {};
 
+ac.data = {
+    visited : {}
+};
+
 var db = null;
 ac.fire_auth_state = null;
 ac.uid = null;
@@ -35,6 +39,9 @@ function initFire(){
 
     db = firebase.firestore();
     console.log("fire inited.")
+
+    ac.initData();
+    console.log("ac inited");
 }
 
 /**ログアウトします。 */
@@ -89,6 +96,23 @@ async function signInSv(data=null){
         })
     })
 
+}
+
+ac.initData = function(){
+    var visited = window.localStorage.getItem("visited");
+    ac.data.visited = visited || {};
+}
+
+ac.saveData = function(){
+    var visited = ac.data.visited ? JSON.stringify(cc.data.visited) : null;
+    if(visited) window.localStorage.setItem("visited",visited);
+}
+
+ac.chkVisited = function(url,firstCallback){
+    if(ac.data.visited[url]) return;
+    ac.data.visited[url] = Date.now();
+    if(firstCallback) firstCallback();
+    ac.saveData();
 }
 
 /** callback({pushdata},"name")  */
@@ -158,6 +182,27 @@ ac.sendReply = function(resid,reply){
     }) 
 }
 
+ac.sendCheckedReply = function(pids){
+    return new Promise((x)=>{
+        $.ajax({
+            url : '/rep',
+            type : 'POST',
+            data : {
+                pids : pids
+            }
+        })
+        .done( (data) => {
+            console.log("Ajax Success",data);
+            if(data.status == "success") x(true);
+            else x(false);
+        })
+        .fail( (data) => {
+            console.log("Ajax Err",data);
+            x(null)
+        });
+    }) 
+}
+
 ac.sendAnswer = function(qid,reply){
     return new Promise((x)=>{
         $.ajax({
@@ -199,7 +244,6 @@ ac.sendCheckedQuestion = function(qids){
         });
     }) 
 }
-
 
 ac.sendQusetionToMe = function(message){ 
     const uid = ac.uid;

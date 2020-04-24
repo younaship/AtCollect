@@ -219,6 +219,22 @@ app.post("/myquestion",async function(req,res){
     res.end();
 });
 
+/** 投稿を済みにする Ajax */
+app.post("/rep",async function(req,res){
+    const pids = req.body.pids;
+    if(!pids) return pushNotFound(res);
+
+    const uid = await getUidFromSession(req); // Auth
+    if(!uid) return pushNullSession(res);
+
+    for(const pid of pids){
+        await fire.setResReply(pid,"checked");
+    }
+    
+    res.json({status:"success"});
+    res.end();
+});
+
 app.post("/res/:postid",async function(req,res){
     const postid = req.params.postid;
     const message = req.body.message;
@@ -287,7 +303,7 @@ app.post("/create",async function (req, res) {
     if(!uid) return pushNullSession(res);
 
     var guid = await fire.createPost(uid,message);
-    res.render("./create/sended.ejs",{message:message});
+    res.render("./create/sended.ejs",{message:message,guid:guid});
 });
 
 /* Auth */

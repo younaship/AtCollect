@@ -9,7 +9,10 @@
     <div class="content">
 
         <div class="view_aria" id="every">
-
+            <div class="row">
+                <p class="g s">最新の投稿</p>
+            </div>
+            
             <% for(var p of posts){ %>
 
                 <div class="post_with" id="<%= p.guid %>">
@@ -32,11 +35,9 @@
                     <script>
                     
                         $("#<%= p.guid %>_go").click(async function(){
-                            console.log("clciked")
                             const message = "<%= p.message %>";
-                            const jObj = $(this).addClass("trans");
+                            const jObj = $("#<%= p.guid %>").addClass("trans");
                             const res = await ac.sendQusetionToMe(message);
-                            console.log("RESULT",res)
                             setTimeout(()=>{
                                 jObj.remove();
                             },500);

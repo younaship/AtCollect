@@ -1,0 +1,438 @@
+body{
+    margin: 0;
+    font-family: 'Hiragino Kaku Gothic ProN','ヒラギノ角ゴ ProN W3','メイリオ', 'Meiryo','Yu Gothic UI',sans-serif;
+    background-color: whitesmoke;
+}
+
+textarea{
+    font-family: 'Hiragino Kaku Gothic ProN','ヒラギノ角ゴ ProN W3','メイリオ', 'Meiryo','Yu Gothic UI',sans-serif;
+}
+
+a,a:active,a:visited{
+    text-decoration: none;
+    color: black;
+}
+
+p{
+    margin: 0;
+}
+
+input[type="button"],input[type="text"],input[type="submit"]{
+    border: none;
+    box-shadow: 1px 1px 5px 1px gray;
+    -webkit-appearance: none;
+}
+
+input:active{
+    opacity: .9;
+}
+
+.header{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    z-index: 5;
+    background-color: orange;
+    /*box-shadow: 1px 1px 5px 1px gray;*/
+}
+
+.header .title{
+    font-size: large;
+    color: white;
+    text-align: center;
+}
+
+.top_area{
+    position: absolute;
+    width: 100%;
+    min-height: 110px;
+    top : 60px;
+    z-index: 1;
+}
+
+.top_area.pd{
+    top : 100px;
+}
+
+#account_icon{
+    position: absolute;
+    top : 0;
+    right: 0;
+    width: 32px;
+    height: 32px;
+    margin: 14px;
+}
+
+#logo{
+    position: absolute;
+    top : 0;
+    left: 0;
+    height: 32px;
+    margin: 14px;
+}
+
+.bg_or{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 170px;
+    background-color: orange;
+    z-index: -1;
+}
+
+.bg_bl{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 170px;
+    background-color: rgb(30,100,255);
+    z-index: -1;
+}
+
+
+.content{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    left: 0;
+    top: 60px;
+    width: 100%;
+    padding-bottom: 60px;
+
+}
+
+.content.mpd{
+    top : 160px;
+}
+
+.content.pd{
+    top: 280px;
+
+}
+
+.content.fit{
+    display: flex;
+    top : 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+}
+
+.footer{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    background-color: orange;
+    z-index: 5;
+}
+
+.footer .tab{
+    flex: 1;
+    text-align: center;
+}
+
+.footer .icon{
+    width: 32px;
+    height: 32px;
+}
+
+/* CSS Anim */
+
+.none{
+    display: none;
+}
+
+.trans{
+    opacity: 0;
+}
+
+/* All */
+.fill{
+    height: 100%;
+    width: 100%;
+}
+
+.ab{
+    position: absolute;
+}
+
+a.link{
+    position: absolute;
+    top:0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.none{
+    display: none;
+}
+
+.w{
+    color: white;
+}
+
+.o{
+    color: orange;
+}
+
+.b{
+    color: rgb(30,100,255);
+}
+
+.g{
+    color: gray;
+}
+
+.btn:active{
+    opacity: .8;
+}
+
+.xs{
+    font-size: x-small;
+}
+
+.s{
+    font-size: small;
+}
+
+.l{
+    font-size: x-large;
+}
+
+.xl{
+    font-size: xx-large;
+}
+
+/* img */
+
+.tw{
+    background-color: black;
+}
+
+/* Cell */
+
+.row{
+    position: relative;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.row.c{
+    flex-direction: column;
+    align-items: center;
+}
+
+.row.inline{
+    display: inline;
+}
+
+.row.line{
+    width: auto;
+    flex-direction: column;
+    justify-content: start;
+}
+
+.ibtn{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 16px;
+    width: 360px;
+    height: 45px;
+    font-size: large;
+    font-weight: 550;
+    box-shadow: 1px 1px 5px 1px gray;
+}
+
+.mbtn{
+    width: 100px;
+    height: 30px;
+    background-color: rgb(30,100,255);
+    color: white;
+}
+
+.ibtn:active{
+    opacity: .9;
+}
+
+.item{
+    width: 100%;
+    background-color: white;
+}
+
+.tools .icon{
+    height: 32px;
+    width: 32px;
+    margin: 0 5px;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.post{
+    position: relative;
+    height: 140px;
+    width: 400px;
+    margin: 10px;
+    transition: opacity .5s;
+}
+
+.post .message{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.message p{
+    font-weight: 550;
+    max-width: calc(100% - 100px);
+    max-height: calc(100% - 40px);
+    overflow: hidden;
+}
+
+.post .in_text{
+    border: none;
+    resize: none;
+    vertical-align: middle;
+    outline: none;
+    text-align: center;
+    font-size: medium;
+    width: 280px;
+    height: 60px;
+    background-color: transparent;
+}
+
+.post > img{
+    height: 100%;
+    width: 100%;
+    border-radius: 15px;
+}
+
+.ibtn.or{
+    background-color: orange;
+    color:white;
+}
+
+.post_with{
+    position: relative;
+    height: 160px;
+    width: 420px;
+    transition: all .5s;
+}
+
+.post_with.open{
+    height: 260px;
+}
+
+.post_with .post{
+    position: absolute;
+}
+
+.btn_new_post{
+    position: relative;
+    border-radius: 12px;
+    width: 320px;
+    height: 30px;
+    margin: 10px 40px;
+    padding : 10px;
+    background-color: white;
+    font-size: large;
+}
+
+.tools{
+    display: flex;
+    justify-content: start;
+    padding : 0 5px;
+}
+
+/* root */
+.ibtn.tw{
+    margin-top: 10px;
+    color: white;
+    background-color: #1EA1F3;
+}
+
+.ibtn.face{
+    margin-top:10px;
+    color: white;
+    background-color: #385495;
+}
+
+/* mypage */
+
+/* mypage/[postid] */
+
+.view_aria{
+    position: relative;
+    margin: 10px 0;
+    width: 100%;
+}
+
+.view_selecter{
+    display: flex;
+    justify-content: center;
+    width: 300px;
+    height: 50px;
+    margin: 10px 60px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 10px 1px gray;
+    overflow: hidden;
+}
+
+.view_selecter .col{
+    flex: 1;
+    text-align: center;
+    line-height: 50px;
+    font-size: large;
+    background-color: white;
+    color: black;
+}
+
+.view_selecter .col.active{
+    background-color: orange;
+    color: white;
+}
+
+.btn.rep_send{
+    position:absolute;
+    bottom:20px;
+    right:20px;
+    background-color: orange;
+    color: white;
+    font-weight:bold;
+    width: 60px;
+    height: 20px;
+}
+
+/* /Create */
+.row .title{
+    margin: 5px 10px;
+    font-size: large;
+    color: white;
+}
