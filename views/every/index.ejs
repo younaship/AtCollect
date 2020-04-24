@@ -13,17 +13,21 @@
             <% for(var p of posts){ %>
 
                 <div class="post_with" id="<%= p.guid %>">
-                    <div class="post" style="top:0;z-index: 1;">
+                    <div class="post" style="top:0;z-index: 1;margin-top: 20px;">
                         <img src="/img/card_b.png" />
                         <div class="message">
                             <p><%= p.message %></p>
                         </div>
+
+                        <div class="row" style="justify-content: flex-right; justify-content: flex-end;margin-top: 5px; margin-bottom: 5px;">
+                            <input type="button" class="btn mbtn" style="border-radius: 5px;" value="質問箱に追加"/>  
+                        </div>
                     </div>                  
                 </div>
 
-                <div class="row" style="justify-content: flex-right;">
+                <!-- <div class="row" style="justify-content: flex-right;">
                     <input type="button" class="btn mbtn" value="回答する"/>  
-                </div>
+                </div> -->
 
                     <script>
                     

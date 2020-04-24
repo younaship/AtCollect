@@ -19,7 +19,7 @@ p{
 
 input[type="button"],input[type="text"],input[type="submit"]{
     border: none;
-    box-shadow: 1px 1px 5px 1px gray;
+    box-shadow: 3px 3px 3px rgb(0,0,0,0.1);
     -webkit-appearance: none;
 }
 
@@ -38,7 +38,7 @@ input:active{
     width: 100%;
     height: 60px;
     z-index: 5;
-    background-color: orange;
+    background-color: #FFA610;
     /*box-shadow: 1px 1px 5px 1px gray;*/
 }
 
@@ -83,7 +83,7 @@ input:active{
     left: 0;
     width: 100%;
     height: 170px;
-    background-color: orange;
+    background-color: #FFA610;
     z-index: -1;
 }
 
@@ -139,7 +139,7 @@ input:active{
     bottom: 0;
     width: 100%;
     height: 60px;
-    background-color: orange;
+    background-color: #FFA610;
     z-index: 5;
 }
 
@@ -190,7 +190,8 @@ a.link{
 }
 
 .o{
-    color: orange;
+    color: #FFA610;
+    font-size: 15px;
 }
 
 .b{
@@ -198,7 +199,8 @@ a.link{
 }
 
 .g{
-    color: gray;
+    color:#11283D;
+    font-size: 20px;
 }
 
 .btn:active{
@@ -263,7 +265,7 @@ a.link{
     height: 45px;
     font-size: large;
     font-weight: 550;
-    box-shadow: 1px 1px 5px 1px gray;
+    box-shadow: 3px 3px 3px rgb(0,0,0,0.1);
 }
 
 .mbtn{
@@ -292,9 +294,12 @@ a.link{
 
 .post{
     position: relative;
-    height: 140px;
-    width: 400px;
-    margin: 10px;
+    height: 160px;
+    width: 360px;
+    margin: 0 auto;
+    padding: 10px 7vw 40px 7vw;
+    margin-top: 20px;
+    background-color: white;
     transition: opacity .5s;
 }
 
@@ -327,6 +332,7 @@ a.link{
     width: 280px;
     height: 60px;
     background-color: transparent;
+    font-weight: bold;
 }
 
 .post > img{
@@ -336,7 +342,7 @@ a.link{
 }
 
 .ibtn.or{
-    background-color: orange;
+    background-color: #FFA610;
     color:white;
 }
 
@@ -345,6 +351,7 @@ a.link{
     height: 160px;
     width: 420px;
     transition: all .5s;
+    margin-bottom: 80px;
 }
 
 .post_with.open{
@@ -398,11 +405,12 @@ a.link{
 .view_selecter{
     display: flex;
     justify-content: center;
-    width: 300px;
+    width: 350px;
     height: 50px;
     margin: 10px 60px;
     border-radius: 10px;
-    box-shadow: 1px 1px 10px 1px gray;
+    box-shadow: 3px 3px 3px rgb(0,0,0,0.1);
+    font-weight: bold;
     overflow: hidden;
 }
 
@@ -412,11 +420,11 @@ a.link{
     line-height: 50px;
     font-size: large;
     background-color: white;
-    color: black;
+    color: #12293E;
 }
 
 .view_selecter .col.active{
-    background-color: orange;
+    background-color: #FFA610;
     color: white;
 }
 
@@ -424,7 +432,7 @@ a.link{
     position:absolute;
     bottom:20px;
     right:20px;
-    background-color: orange;
+    background-color: #FFA610;
     color: white;
     font-weight:bold;
     width: 60px;
