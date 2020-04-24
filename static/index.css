@@ -46,6 +46,7 @@ input:active{
     font-size: large;
     color: white;
     text-align: center;
+    font-weight: bold;
 }
 
 .top_area{
@@ -313,6 +314,7 @@ a.link{
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    margin-top: -10px;
 }
 
 .message p{
