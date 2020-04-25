@@ -204,6 +204,7 @@ app.post("/myquestion/:qid",async function(req,res){
     res.end();
 });
 
+
 /** 質問を閲覧済みにする Ajax */
 app.post("/myquestion",async function(req,res){
     const qids = req.body.qids;
@@ -219,7 +220,7 @@ app.post("/myquestion",async function(req,res){
     res.end();
 });
 
-/** 投稿を済みにする Ajax */
+/** 投稿をに対するリプを済みにする Ajax */
 app.post("/rep",async function(req,res){
     const pids = req.body.pids;
     if(!pids) return pushNotFound(res);
@@ -306,6 +307,29 @@ app.post("/create",async function (req, res) {
     res.render("./create/sended.ejs",{message:message,guid:guid});
 });
 
+/* Action Ajax*/
+app.post("/remove/:target",async(req,res)=>{
+    const uid = await getUidFromSession(req) // Auth
+    if(!uid) return pushNullSession(res);
+    const target = req.params.target;
+    switch(target){
+        case "question":
+            const qid = req.body.qid;
+            if(!qid) return res.end();
+            if(await fire.removeQuestion(uid,qid)) return pushOk(res);
+            break;
+        case "post":
+            const postid = req.body.postid;
+            if(!postid) return res.end();
+            if(await fire.removePost(uid,postid)) return pushOk(res);
+            break;
+        default :
+            return res.end();
+    }
+    return res.json({"status":"error"})
+})
+
+
 /* Auth */
 app.post('/login', async (req, res) => {
     // Get the ID token passed and the CSRF token.
@@ -383,6 +407,12 @@ function pushNullSession(res){
         'Location': '/signin/'
     });
     res.end();
+}
+
+function pushOk(res){
+    res.json({
+        "status" : "success"
+    });
 }
 
 function mkRandId(n=4){

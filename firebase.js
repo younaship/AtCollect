@@ -217,6 +217,26 @@ exports.createPost = function(uid,message){
   })
 }
 
+/**Postを削除します。 */
+exports.removePost = function(uid,postid){
+  return new Promise(async(x)=>{
+    var ref = await db.collection("/posts").where("uid","==",uid).where("guid","==",postid).get(); // 認証チェック
+    if(ref.size>0) await db.collection("/post").doc(postid).delete();
+    else return x(false);
+    x(true);
+  })
+}
+
+/**質問を削除 */
+exports.removeQuestion = function(uid,qid){
+  return new Promise(async(x)=>{
+    var ref = await db.collection("/question").where("to","==",uid).where("guid","==",qid).get(); // 認証チェック
+    if(ref.size>0) await db.collection("/question").doc(qid).delete();
+    else return x(false);
+    x(true);
+  })
+}
+
 /**ユーザーを作成、IDを返します。 */
 exports.createUser = function(uid,id,name){
   return new Promise(async(x)=>{

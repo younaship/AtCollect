@@ -268,6 +268,27 @@ ac.sendQusetionToMe = function(message){
     });
 }
 
+ac.removeQuestion = function(qid){
+    if(!qid) return;
+    return new Promise((x)=>{
+        $.ajax({
+            url : '/remove/question' ,
+            type : 'POST',
+            data : {
+                qid : qid
+            }
+        })
+        .done( (data) => {
+            console.log("Ajax Success",data);
+            x(true);
+        })
+        .fail( (data) => {
+            console.log("Ajax Err",data);
+            x(false);
+        })
+    });
+}
+
 view.showShareMyUrlWd = function(){
     
 }

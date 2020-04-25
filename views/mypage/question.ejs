@@ -45,7 +45,7 @@
 
             <% for(var p of nocheck){ %>
 
-                <div class="post_with" id="<%= p.guid %>">
+                <div class="row c _post" id="<%= p.guid %>" style="transition: all .5s">
                     <div class="post sw" style="top:0;z-index: 1;">
                         <img src="/img/card_b.png" />
                         <div class="message">
@@ -66,23 +66,28 @@
 
                     </script>
 
-                </div>
-
-                <div class="tools">
-                <!--
-                    <div class="icon rem">
-                        <img src="/img/delete_icon.png" class="fill btn"/>
-                    </div>
-                -->
-                    <div class="icon ins">
-                        <img src="/img/ins_icon.png" class="fill btn" 
-                            onclick="$('#<%= p.guid %>').removeClass('open');
-                                viewInst($('#<%= p.guid %>').prop('outerHTML'),()=>instOnClickChecked(['<%= p.guid %>']));"/> <!--View Inst-->
+                    <div class="tools">
+                    
+                        <div class="icon rem">
+                            <img src="/img/delete_icon.png" class="fill btn" onclick="pushRemove($('#<%= p.guid %>'),'<%= p.guid %>')"/>
+                        </div>
+                    
+                        <div class="icon ins">
+                            <img src="/img/ins_icon.png" class="fill btn" 
+                                onclick="$('#<%= p.guid %>').removeClass('open');
+                                    viewInst($('#<%= p.guid %>').prop('outerHTML'),()=>instOnClickChecked(['<%= p.guid %>']));"/> <!--View Inst-->
+                        </div>
                     </div>
                 </div>
 
             <% } %>
-            <script>            
+            <script>         
+                async function pushRemove(jObj,qid){
+                    $(jObj).addClass("trans")
+                    setTimeout(()=>$(jObj).remove(),500);
+                    if(!await ac.removeQuestion(qid)) window.alert("エラー");
+                }
+                
                 function moveToChecked(jObj,message,reply){
                     const TEMPLATE = `
                     <div class="post_with open">
@@ -102,22 +107,22 @@
                     `;
                     jObj.addClass("trans");
                     $("#checked").prepend(TEMPLATE);
-                    
+                    /*
                     $(".post_with .sw").click(function(){
                         $(this).parent().hasClass("open") ? $(this).parent().removeClass("open") : $(this).parent().addClass("open");
                     })
-
+                    */
                     setTimeout(()=>{
                         jObj.remove();
                     },500);
                 }
 
                 function instRenderAll(target){ // target "nocheck" or "checked"
-                    if($("#"+target+" .post_with").length<=0) return window.alert("質問がまだありません。「みんなの質問」から回答しましょう！");
+                    if($("#"+target+" ._post").length<=0) return window.alert("質問がまだありません。「みんなの質問」から回答しましょう！");
                     var html = "";
                     var qids = [];
                     var count = 5;
-                    for(const obj of $("#"+target+" .post_with")){
+                    for(const obj of $("#"+target+" ._post .post")){
                         count--;
                         if(count<0) continue;
                         const guid = $(obj).attr("id");
