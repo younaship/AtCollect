@@ -75,7 +75,7 @@
                         <div class="icon ins">
                             <img src="/img/ins_icon.png" class="fill btn" 
                                 onclick="$('#<%= p.guid %>').removeClass('open');
-                                    viewInst($('#<%= p.guid %>').prop('outerHTML'),()=>instOnClickChecked(['<%= p.guid %>']));"/> <!--View Inst-->
+                                    viewInst($('#<%= p.guid %> .post').prop('outerHTML'),()=>instOnClickChecked(['<%= p.guid %>']));"/> <!--View Inst-->
                         </div>
                     </div>
                 </div>
