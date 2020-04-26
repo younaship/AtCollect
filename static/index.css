@@ -298,9 +298,9 @@ a.link{
     height: 160px;
     width: 360px;
     margin: 0 auto;
-    padding: 10px 7vw 40px 7vw;
+    /* padding: 10px 7vw 40px 7vw; */
     margin-top: 20px;
-    background-color: white;
+    /* background-color: white; */
     transition: opacity .5s;
 }
 
