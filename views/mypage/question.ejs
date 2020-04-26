@@ -46,7 +46,7 @@
             <% for(var p of nocheck){ %>
 
                 <div class="row c _post" id="<%= p.guid %>" style="transition: all .5s">
-                    <div class="post sw" style="top:0;z-index: 1;">
+                    <div class="post sw" style="top:0;z-index: 1;" guid="<%= p.guid %>">
                         <img src="/img/card_b.png" />
                         <div class="message">
                             <p><%= p.message %></p>
@@ -125,7 +125,7 @@
                     for(const obj of $("#"+target+" ._post .post")){
                         count--;
                         if(count<0) continue;
-                        const guid = $(obj).attr("id");
+                        const guid = $(obj).attr("guid");
                         qids.push(guid);
                         $(obj).removeClass('open');
                         html += $(obj).prop('outerHTML');
@@ -160,8 +160,8 @@
     </div>
     
     <script>
-        function instOnClickChecked(qids){
-            ac.sendCheckedQuestion(qids);
+        async function instOnClickChecked(qids){
+            await ac.sendCheckedQuestion(qids);
             location.href="/myquestion";
         }
 
