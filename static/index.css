@@ -19,7 +19,7 @@ p{
 
 input[type="button"],input[type="text"],input[type="submit"]{
     border: none;
-    box-shadow: 1px 1px 5px 1px gray;
+    box-shadow: 1px 1px 5px gray;
     -webkit-appearance: none;
 }
 
@@ -260,12 +260,12 @@ a.link{
     justify-content: center;
     align-items: center;
     background-color: white;
-    border-radius: 16px;
+    border-radius: 8px;
     width: 360px;
     height: 45px;
     font-size: large;
     font-weight: 550;
-    box-shadow: 1px 1px 5px 1px gray;
+    box-shadow: 1px 1px 5px gray;
 }
 
 .mbtn{
@@ -405,7 +405,7 @@ a.link{
     height: 50px;
     margin: 10px 60px;
     border-radius: 10px;
-    box-shadow: 1px 1px 10px 1px gray;
+    box-shadow: 1px 1px 5px gray;
     overflow: hidden;
 }
 

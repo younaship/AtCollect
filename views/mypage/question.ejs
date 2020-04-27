@@ -11,7 +11,7 @@
     <%- include("../popup.ejs")%>
 
     <div class="content" style="padding-bottom:120px">
-        <div class="row" style="margin:10px 0">
+        <div class="row" style="margin-top: -1px;padding:30px 0;background-color: orange;">
             <div class="ibtn btn" id="btn_getlink">
                 <img src="/img/clip.png" style="height:20px;margin-right: 10px" />
                 <p class="o">質問募集リンクを取得</p>
@@ -32,13 +32,13 @@
             </script>
         </div>
 
-        <div class="view_selecter">
-            <p class="col nocheck active" type="nocheck">未回答</p>
-            <p class="col checked" type="checked">回答済み</p>
+        <div class="view_selecter" style="margin-top: 40px;margin-bottom: 50px;">
+            <p class="col nocheck active" style="font-weight: bold;" type="nocheck">未回答</p>
+            <p class="col checked"style="font-weight: bold; type="checked">回答済み</p>
         </div>
 
         <p class="row" style="position:fixed;left:0px;bottom:70px;z-index:2;">
-            <input type="button" class="ibtn" value="まとめて回答する" onclick="instRenderAll('nocheck')" />
+            <input type="button" class="ibtn" style="background-color: #12293E; color: white; width: 50%; height: 60px; border-radius: 30px;" value="まとめて回答する" onclick="instRenderAll('nocheck')" />
         </p>
 
         <div class="view_aria" id="nocheck">
