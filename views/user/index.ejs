@@ -5,14 +5,14 @@
     <link rel="stylesheet" href="/user.css">
 </head>
 <body>
-    <%- include("../header.ejs",{style:"background-color: rgb(30,100,255);"})%>
+    <%- include("../header_t.ejs",{style:"background-color: rgb(30,100,255);"})%>
 
 <% if(post){ %>
         <a href="/res/<%=post.guid%>" class="link">「<%= user.name %>」さんの最新の投稿にメッセージを送ることも出来ます。</a>
 <% } %>
 
     <form action="/q/<%= user.uid %>" method="POST">
-    <div class="content fit">
+    <div class="content fit" style="height:calc(100vh - 60px)">
 
         <div class="row" style="margin:10px">
             <p class="b"><b>「<%= user.name %>」さんは質問を受付中です</b></p>
@@ -25,13 +25,14 @@
             </div>
         </div>
         
+<!--
         <div class="row" style="margin-top:10px">
             <input type="checkbox" id="chk_pri" value="on" name="pri" /><label for="chk_pri" class="s g">非公開メッセージとして送信</label>
         </div>
         <div class="row" style="margin-bottom:10px">
             <p class="xs g">チェックボックスを入れると「みんなの投稿」に出てこなくなります。</p>
         </div>       
-
+-->
         <div class="row" style="margin:10px 0">
             <input type="submit" class="ibtn send" value="送信"/>
         </div>
