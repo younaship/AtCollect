@@ -1,0 +1,30 @@
+<html>
+<head>
+    <%- include("../head.ejs") %>
+    <title>My/Post</title>
+</head>
+<body style="background-color: orange;">
+    
+    <%- include("../header.ejs")%>
+
+    <div class="bg_or" ></div>
+
+    <div class="content fit">
+        <div class="row">
+            <p class="w l">送信完了しました！</p>
+        </div>
+        <div class="post">
+            <img src="/img/card_b.png" />
+            <div class="message">
+                <p><%= message %></p>
+            </div>
+        </div>
+
+        <div class="row">
+            <a href="/" class="ibtn"><p>完了</p></a>
+        </div>
+    </div>
+
+
+</body>
+</html>

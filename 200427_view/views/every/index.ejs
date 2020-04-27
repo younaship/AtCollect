@@ -1,0 +1,51 @@
+<html>
+<head>
+    <%- include("../head.ejs") %>
+    <title>マイページ</title>
+</head>
+<body>
+    <%- include("../header.ejs",{title:"みんなの質問"})%>
+
+    <div class="content">
+
+        <div class="view_aria" id="every">
+            <div class="row">
+                <p class="g s">最新の投稿</p>
+            </div>
+            
+            <% for(var p of posts){ %>
+
+                <div class="row c" id="<%= p.guid %>" 
+                    style="transition: all .5s;background-color:white;margin:5px 0;align-items:flex-end;">
+                    <div class="post" style="top:0;z-index: 1;">
+                        <img src="/img/card_b.png" />
+                        <div class="message">
+                            <p><%= p.message %></p>
+                        </div>
+                    </div>
+                    <input type="button" class="btn mbtn" value="回答する" id="<%= p.guid %>_go"
+                        style="margin:0px 10px 5px 0" />                    
+                </div>
+
+                    <script>
+                    
+                        $("#<%= p.guid %>_go").click(async function(){
+                            const message = "<%= p.message %>";
+                            const jObj = $("#<%= p.guid %>").addClass("trans");
+                            const res = await ac.sendQusetionToMe(message);
+                            setTimeout(()=>{
+                                jObj.remove();
+                            },500);
+                        })
+
+                    </script>
+
+            <% } %>
+        </div>
+
+    </div>
+
+    <%- include("../footer.ejs")%>
+
+</body>
+</html>

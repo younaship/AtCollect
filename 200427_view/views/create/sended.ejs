@@ -1,0 +1,70 @@
+<html>
+<head>
+    <%- include("../head.ejs") %>
+    <title>投稿が完了しました！</title>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+    <link rel="stylesheet" href="/inst_view.css">
+</head>
+<body style="background-color: orange;">
+    <%- include("../header.ejs",{title:"投稿完了"})%>
+    <%- include("../inst_view.ejs")%>
+    <%- include("../popup.ejs")%>
+
+    <div class="bg_or" ></div>
+
+    <div class="content fit">
+        <div class="row">
+            <p class="w l">投稿完了しました！</p>
+        </div>
+        <div class="post" id="post">
+            <img src="/img/card_y.png" />
+            <div class="message">
+                <p><%= message %></p>
+            </div>
+        </div>
+
+        <div class="row">
+            <p class="w">投稿をシェアしよう！</p>
+        </div>
+
+        <div class="row" style="margin: 10px 0;">
+            <div class="tools" style="margin: 0 10px;">
+                <img src="/img/ins_icon.png" class="icon" id="btn_share_inst"
+                    onclick="viewInst($('#post').prop('outerHTML'));"/>
+                <!--<img src="/img/tw_icon.png" class="icon tw" />-->
+            </div>
+        </div>
+
+<!--
+        <div class="ibtn btn" id="btn_getlink" style="margin:15px 0;">
+            <img src="/img/clip.png" style="height:20px;margin-right: 10px" />
+            <p class="o">質問募集リンクを取得</p>
+        </div>
+-->
+        <div class="row" style="margin:8px 0;">
+            <a href="/mypage/?share=true" class="ibtn"><p>完了</p></a>
+        </div>
+    </div>
+
+    <script>
+        $(function(){
+            $("#btn_share_inst").click();
+            setTimeout(()=> window.alert("画像をスクリーンショットまたは保存してSNSでシェアをしよう！"),200);
+        });
+
+        /*ac.chkVisited(window.location,()=>{
+            window.alart("")
+        })*/
+
+        const MY_ANSWER_URL = "https://at-collect.net/res/<%= guid %>";
+        $("#btn_getlink").click(()=>{
+            copyToClip(MY_ANSWER_URL);
+            viewPopUp(IMAGE_TEMPLATE);
+            setTimeout(()=>window.alert("URLをコピーしました。このリンクで回答ができます。SNSへ貼り付けてご利用ください。"),100);
+        });
+
+    </script>
+
+
+</body>
+</html>
