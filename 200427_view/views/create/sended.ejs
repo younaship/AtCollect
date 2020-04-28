@@ -14,7 +14,7 @@
 
     <div class="content fit">
         <div class="row">
-            <p class="w l" style="font-weight: bold;font-size: 29px;margin-top: -80px;">投稿が作成されました</p>
+            <p class="w l">投稿完了しました！</p>
         </div>
         <div class="post" id="post">
             <img src="/img/card_y.png" />
@@ -23,17 +23,17 @@
             </div>
         </div>
 
-        <!-- <div class="row">
+        <div class="row">
             <p class="w">投稿をシェアしよう！</p>
-        </div> -->
+        </div>
 
-        <!-- <div class="row" style="margin: 10px 0;">
+        <div class="row" style="margin: 10px 0;">
             <div class="tools" style="margin: 0 10px;">
                 <img src="/img/ins_icon.png" class="icon" id="btn_share_inst"
                     onclick="viewInst($('#post').prop('outerHTML'));"/>
-                <img src="/img/tw_icon.png" class="icon tw" />
+                <!--<img src="/img/tw_icon.png" class="icon tw" />-->
             </div>
-        </div> -->
+        </div>
 
 <!--
         <div class="ibtn btn" id="btn_getlink" style="margin:15px 0;">
@@ -41,16 +41,9 @@
             <p class="o">質問募集リンクを取得</p>
         </div>
 -->
-        <div style="margin-top: 80px;">
-            <div class="row" style="margin:8px 0;">
-                <a onclick="viewInst($('#post').prop('outerHTML'));" style="padding: 8px;color: white;font-size: 20px; background-color: #FFCC2D;" class="ibtn"><p>ストーリー用の写真を再撮影</p></a>
-            </div>
-
-            <div class="row" style="margin:8px 0;">
-                <a href="/mypage/?share=true" style="padding: 8px;color: #FFCC2D;font-size: 20px;" class="ibtn"><p>完了</p></a>
-            </div>
+        <div class="row" style="margin:8px 0;">
+            <a href="/mypage/?share=true" class="ibtn"><p>完了</p></a>
         </div>
-
     </div>
 
     <script>

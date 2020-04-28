@@ -1,22 +1,22 @@
 <div id="inst_view" class="none">
     <img src="/img/cross.png" id="inst_close" class="btn"
         style="position:absolute;top:0px;right:0px;margin:10px;height:28px;" />
-<!--
+
     <img src="/img/dl.png" id="inst_dl" class="btn"
         style="position:absolute;top:42px;right:0px;margin:8px;height:32px;" />
--->
+
 
     <div class="view" >
         <div class="fill ab disable_event" id="inst_view_in"></div>
         <div class="fill ab" id="inst_img_view"></div>
     </div>
     
-    <div class="row" style="position:fixed;z-index:8;bottom:20px;left:0;right :0;">
-        <input type="button" class="ibtn" value="回答済みにする" style="padding: 14px;color: white;height: 59px; border-radius: 40px;font-size: 20px;width: 50%;background-color: #F2800C;" id="checked_btn"/>
+    <div class="row" style="position:fixed;z-index:6;bottom:20px;left:0;right :0">
+        <input type="button" class="ibtn" value="回答済みにする" id="checked_btn"/>
     </div>
     
 
-    <div class="disable_event" id="canvas_tmp_box" style="position:fixed;display:none"></div>
+    <div class="disable_event" id="canvas_tmp_box" style="positon;fixed;display:none"></div>
 </div>
 
 <script>
@@ -24,13 +24,13 @@
     function initInstView(html){ return `
         <div class="fill ab"
             style="display:flex;justify-content: center;align-items: center;
-                background-color: white; flex-direction: column;">
+                background-color: rgb(30,100,255); flex-direction: column;">
 
             <img src="/img/inst_here.png" class="ab" 
                 style="top:0;left:0;margin:30px;width:50px">
 
-            <p class="xs">匿名メッセージ共有サービス</p>
-            <p class="s" style="padding-bottom:30px">@Collect</p>
+            <p class="w xs">匿名メッセージ共有サービス</p>
+            <p class="w s" style="padding-bottom:30px">@Collect</p>
             ${html}
         </div>
     `}

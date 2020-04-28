@@ -1,0 +1,73 @@
+<html>
+<head>
+    <%- include("../head.ejs") %>
+    <title>初回登録</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body style="background-color: orange;">
+    <%- include("../header.ejs")%>
+
+    <div class="content fit">
+        <div class="row" style="margin:5px 0">
+            <p class="w xl">初回登録</p>
+        </div>
+        <div class="row" style="margin:5px 0">
+            <p class="w">@Collectで使用する名前を入力してください。</p>
+        </div>
+
+        <div class="row" style="margin:5px 0">
+            <input type="text" class="l" id="in_name" maxlength="9" placeholder="名前を入力" style="padding:5px"/>
+        </div>
+
+        
+        <div class="row" style="margin:5px 0">
+            <p class="s" style="color:gray">9文字以内で入力してください。</p>
+        </div>
+
+        <div class="row" style="margin:30px 0">
+            <input type="button" class="ibtn" value="完了" id="btn_ok"/>
+        </div>
+    </div>
+
+    <script>
+
+        $("#in_name").val(getParam("name"));
+
+        $("#btn_ok").click(async()=>{
+            const val = $("#in_name").val();
+            if(0 > String(val).length) return window.alert("文字が入力されていません。");
+            if(9 < String(val).length) return window.alert("入力されたIDの文字数が正しくありません");
+
+            var ans = await window.confirm(`名前は"${val}"でよろしいでしょうか？`,"OK","Cansel");
+            if(!ans) return;
+
+            var result = await mkId(val);
+
+            if(!result) window.alert("不明なエラーが発生しました。");
+            else if(result.status=="success") location.href = "/mypage/";
+            else window.alert(`エラー\n${result.message}`);
+        })
+
+        function mkId(name){
+            return new Promise((x)=>{
+                $.ajax({
+                    url : '/mkuser/',
+                    type : 'POST',
+                    data : {
+                        name : name
+                    }
+                })
+                .done( (data) => {
+                    console.log("Ajax Success",data);
+                    x(data);
+                })
+                .fail( (data) => {
+                    console.log("Ajax Err",data);
+                    x(null)
+                });
+            }) 
+        }
+    </script>
+
+</body>
+</html>

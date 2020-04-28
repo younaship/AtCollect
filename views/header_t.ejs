@@ -1,3 +1,8 @@
-<header class="header">    
-    <img src="/img/at-collect_logo.png" id="logo"/>
+<% var title,style; %>
+<% if(style){ %>
+<header class="header" style="<%=style%>" >
+<%}else{%>
+<header class="header">
+<%}%>  
+    <img src="/img/at-collect_logo.png" id="logo" onclick="location.href = '/'"/>
 </header>

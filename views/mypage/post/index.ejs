@@ -23,8 +23,8 @@
     <div class="content pd">
 
         <div class="view_selecter">
-            <p class="col nocheck active" type="nocheck">未回答</p>
-            <p class="col checked" type="checked">回答済み</p>
+            <p class="col nocheck active" type="nocheck" style="font-weight: bold;">未回答</p>
+            <p class="col checked" type="checked" style="font-weight: bold;">回答済み</p>
         </div>
 
         <div class="view_aria" id="nocheck">
@@ -81,7 +81,7 @@
 
                 function instOnClickChecked(qids){
                     ac.sendCheckedReply(qids);
-                    location.href="/mypage";
+                    location.href="/mypage/<%= post.guid %>"; // callback url
                 }
 
                 function moveToChecked(jObj,message,reply){
@@ -114,10 +114,13 @@
                 }
 
                 function instRenderAll(target){ // target "nocheck" or "checked"
-                    if($("#"+target+" .post_with").length<=0) return window.alert("質問がまだありません。「みんなの質問」から回答しましょう！");
+                    if($("#"+target+" .post_with").length<=0) return window.alert("メッセージがまだありません。SNSでメッセージを募集しましょう！");
                     var html = "";
                     var qids = [];
+                    var count = 5;
                     for(const obj of $("#"+target+" .post_with")){
+                        count--;
+                        if(count<0) continue;
                         const guid = $(obj).attr("id");
                         qids.push(guid);
                         $(obj).removeClass('open');
@@ -151,6 +154,11 @@
             <% } %>
         </div>
 
+        <p class="row" style="position:fixed;left:0px;bottom:70px;z-index:2;">
+            <input type="button" class="ibtn" style="background-color: #12293E; color: white; width: 50%; height: 60px; border-radius: 30px;" value="まとめて回答する" onclick="instRenderAll('nocheck')" />
+        </p>
+
+
     </div>
 
     <script>
@@ -168,9 +176,11 @@
             }
         });
 
+        /* open wd
         $(".post_with .sw").click(function(){
             $(this).parent().hasClass("open") ? $(this).parent().removeClass("open") : $(this).parent().addClass("open");
         })
+        */
     </script>
 
     <%- include("../../footer.ejs")%>
