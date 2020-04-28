@@ -46,8 +46,8 @@ exports.getNewPostOnUser = function(uid){
   });
 }
 
-/** uidへの質問一覧を取得 */
-exports.getQuestionToEvery = function(start = 0,size = 30){
+/** みんなの質問一覧 */
+exports.getQuestionToEvery = function(start = 0,size = 5){
   return new Promise((x)=>{
     var q = db.collection("/question").where("pri","==",false).orderBy("time","desc").limit(start+size);
     q.onSnapshot((snap)=>{
@@ -77,7 +77,7 @@ exports.getQuestionToMe = function(uid,start = 0,size = 30){
 }
 
 /** ユーザーの投稿一覧を取得します。 */
-exports.getPosts = function(uid,start = 0,size = 30){
+exports.getPosts = function(uid,start = 0,size = 10){
   return new Promise((x)=>{
     var q = db.collection("/posts").where("uid","==",uid).orderBy("time","desc").limit(start+size);
     q.onSnapshot((snap)=>{
