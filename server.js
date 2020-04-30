@@ -14,11 +14,19 @@ const OPTIONS = {
     cert: fs.readFileSync( SSL_CERT ),
 };
 
+const escaper = require("./escaper");
+
 const log4js = require('log4js')
+log4js.configure({
+    appenders: {
+      app: { type: 'file', filename: 'application.log', maxLogSize: 1000, backups: 1 }
+    },
+    categories: {
+      default: { appenders: ['app'], level: 'all' }
+    }
+  });
 const logger = log4js.getLogger();
 logger.level = 'debug';
-
-
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -256,6 +264,10 @@ app.post("/q/:uid",async function(req,res){
     const pri = req.body.pri ? true : false;
 
     if(!uid||!message) return pushNotFound(res);
+    if(!escaper.chkWd(message)){
+        logger.info("IGNORE Question : "+message)
+        return res.render("./user/sended.ejs",{message:message});
+    }
 
     await fire.addQue(uid,message,pri);
     res.render("./user/sended.ejs",{message:message});
