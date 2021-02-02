@@ -7,11 +7,15 @@ const cookieParser = require('cookie-parser')
 const fs = require("fs");
 const http = require("http");
 const https = require("https");
-const SSL_KEY = "./server-key.pem";
-const SSL_CERT = "./server-cert.pem"; //"/etc/letsencrypt/live/ccsv.g-cc.jp/cert.pem" 
+// const SSL_KEY = "./server-key.pem";
+// const SSL_CERT = "./server-cert.pem"; //"/etc/letsencrypt/live/at-collect.net/cert.pem" 
+const SSL_KEY = "/etc/letsencrypt/live/at-collect.net/privkey.pem";
+const SSL_CERT = "/etc/letsencrypt/live/at-collect.net/cert.pem";
+const SSL_CHAIN = "/etc/letsencrypt/live/at-collect.net/chain.pem";
 const OPTIONS = {
     key: fs.readFileSync( SSL_KEY ),
     cert: fs.readFileSync( SSL_CERT ),
+    ca : fs.readFileSync( SSL_CHAIN)
 };
 
 const escaper = require("./escaper");
